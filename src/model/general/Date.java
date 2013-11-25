@@ -1,85 +1,85 @@
 package model.general;
 
 public class Date {
-	private int heure;
-	private int jour;
-	private int mois;
-	private int annee;
+	private int hour;
+	private int day;
+	private int month;
+	private int year;
 	
 	public Date(){
-		heure = 0;
-		jour = 0;
-		mois = 0;
-		annee = 0;
+		hour = 0;
+		day = 0;
+		month = 0;
+		year = 0;
 	}
 	
-	public Date(int heure, int jour, int mois, int annee){
-		this.heure = heure;
-		this.jour=jour;
-		this.mois=mois;
-		this.annee=annee;
+	public Date(int hour, int day, int month, int year){
+		this.hour = hour;
+		this.day=day;
+		this.month=month;
+		this.year=year;
 	}
 	
-	public boolean estSuperieure(Date date){
-		if (annee>date.annee) return true;
-		if (annee<date.annee) return false;
-		if (mois>date.mois) return true;
-		if (mois<date.mois) return false;
-		if (jour>date.jour) return true;
-		if (jour<date.jour) return false;
-		if (heure>date.heure) return  true;
-		if (heure<date.heure) return false;
+	public boolean isPosterior(Date date){
+		if (year>date.year) return true;
+		if (year<date.year) return false;
+		if (month>date.month) return true;
+		if (month<date.month) return false;
+		if (day>date.day) return true;
+		if (day<date.day) return false;
+		if (hour>date.hour) return  true;
+		if (hour<date.hour) return false;
 		return false;
 	}
 	
-	public boolean estInferieure(Date date){
-		if (estSuperieure(date) || equals(date)) return false;
+	public boolean isPrevious(Date date){
+		if (isPosterior(date) || equals(date)) return false;
 		else return true;
 	}
 	
-	public void heureSuivante(){
-		heure++;
-		if (heure>=24){
-			heure=0;
-			jour++;
+	public void nextHour(){
+		hour++;
+		if (hour>=24){
+			hour=0;
+			day++;
 		}
-		if (jour>30){
-			jour=1;
-			mois++;
+		if (day>30){
+			day=1;
+			month++;
 		}
-		if (mois>12){
-			mois=1;
-			annee++;
+		if (month>12){
+			month=1;
+			year++;
 		}
 	}
 	
 	
-	public int getHeure() {
-		return heure;
+	public int getHour() {
+		return hour;
 	}
 
-	public int getJour() {
-		return jour;
+	public int getDay() {
+		return day;
 	}
 
-	public int getMois() {
-		return mois;
+	public int getMonth() {
+		return month;
 	}
 
-	public int getAnnee() {
-		return annee;
+	public int getYear() {
+		return year;
 	}
 
 	@Override
 	public boolean equals(Object obj){
 		if (!(obj instanceof Date)) return false;
 		Date d = (Date) obj;
-		if (annee == d.annee && mois == d.mois && jour == d.jour && heure == d.heure) return true;
+		if (year == d.year && month == d.month && day == d.day && hour == d.hour) return true;
 		else return false;
 	}
 	
 	@Override
 	public Object clone(){
-		return new Date(heure, jour, mois, annee);
+		return new Date(hour, day, month, year);
 	}
 }

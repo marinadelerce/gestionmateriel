@@ -1,4 +1,4 @@
-package model.materiel;
+package model.material;
 
 public enum OS {
 	ANDROID,
