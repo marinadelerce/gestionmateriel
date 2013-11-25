@@ -53,6 +53,23 @@ public class Date {
 		}
 	}
 	
+	
+	public int getHeure() {
+		return heure;
+	}
+
+	public int getJour() {
+		return jour;
+	}
+
+	public int getMois() {
+		return mois;
+	}
+
+	public int getAnnee() {
+		return annee;
+	}
+
 	@Override
 	public boolean equals(Object obj){
 		if (!(obj instanceof Date)) return false;
