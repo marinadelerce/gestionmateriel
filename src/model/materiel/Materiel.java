@@ -6,6 +6,7 @@ public abstract class Materiel {
 	private String marque;
 	private String description;
 	private int reference;
+	private int tempsMaxEmprunt;
 	
 	public Materiel(String nom, String marque, String description, int reference){
 		this.nom = nom;
@@ -28,5 +29,13 @@ public abstract class Materiel {
 	
 	public int getReference(){
 		return reference;
+	}
+
+	public int getTempsMaxEmprunt() {
+		return tempsMaxEmprunt;
+	}
+
+	public void setTempsMaxEmprunt(int tempsMaxEmprunt) {
+		this.tempsMaxEmprunt = tempsMaxEmprunt;
 	}
 }

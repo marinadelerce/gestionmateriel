@@ -12,7 +12,9 @@ public class Emprunt {
 	private Materiel materiel;
 	private int quantite;
 	private boolean effectif;
+	private boolean validate;
 	
+
 	public Emprunt(Emprunteur emprunteur, Materiel materiel, int quantite, Date debut, Date fin, boolean effectif){
 		dateDebut = debut;
 		dateFin = fin;
@@ -42,11 +44,19 @@ public class Emprunt {
 		return quantite;
 	}
 	
-	public boolean estEffectif(){
+	public boolean isEffectif(){
 		return effectif;
 	}
 	
 	public void setEffectif(boolean b){
 		effectif = b;
+	}
+	
+	public boolean isValidate() {
+		return validate;
+	}
+
+	public void setValidate(boolean validate) {
+		this.validate = validate;
 	}
 }
