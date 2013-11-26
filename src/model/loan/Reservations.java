@@ -1,9 +1,9 @@
 package model.loan;
 
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.general.OurDate;
 
 public class Reservations {
 	
@@ -23,13 +23,13 @@ public class Reservations {
 		reservations.remove(loan);
 	}
 	
-	public List<Loan> getActiveReservations(OurDate date){
+	public List<Loan> getActiveReservations(GregorianCalendar date){
 		
 		List<Loan> active_reservations = new LinkedList<Loan>();
 		
 		for(Loan loan : reservations) {
 			
-			if (((loan.getStartDate().isPrevious(date)||(loan.getStartDate().equals(date))) && (loan.getEndDate().isPosterior(date) || loan.getEndDate().equals(date)))) 
+			if (((loan.getStartDate().before(date)||(loan.getStartDate().equals(date))) && (loan.getEndDate().after(date) || loan.getEndDate().equals(date)))) 
 					active_reservations.add(loan);
 		}
 		

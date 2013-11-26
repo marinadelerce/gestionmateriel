@@ -1,5 +1,7 @@
 package model.general;
 
+import java.util.GregorianCalendar;
+
 import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Users;
@@ -7,22 +9,20 @@ import model.user.Users;
 public class UserManager {
 	
 	private Users users;
-	private OurDate currentDate;
+	private GregorianCalendar currentDate;
 	private MaterialManager manager;
+	private final static int conversion = 86400000;
 	
-	public boolean book(Borrower borrower, MaterialType material, OurDate startDate, OurDate endDate, int quantity){
+	public boolean book(Borrower borrower, MaterialType material, GregorianCalendar startDate, GregorianCalendar endDate, int quantity){
 		
 		boolean book = true;
 		int duration;
 		// verifier les dates
-		if (startDate.isPosterior(endDate) || startDate.equals(endDate))
+		if (startDate.after(endDate) || startDate.equals(endDate))
 			book = false;
 		// verifier les durees
 		else {
-			if (startDate.getMonth() == endDate.getMonth()) {
-				duration = endDate.getDay() - startDate.getDay();
-			} else
-				duration = endDate.getDay() + (startDate.getDay() - 30);
+			duration = startDate.compareTo(endDate)/conversion;
 			if(duration > borrower.getLoanDuration()) book = false;
 		}
 		
@@ -37,11 +37,11 @@ public class UserManager {
 		this.users = users;
 	}
 
-	public OurDate getCurrentDate() {
+	public GregorianCalendar getCurrentDate() {
 		return currentDate;
 	}
 
-	public void setCurrentDate(OurDate currentDate) {
+	public void setCurrentDate(GregorianCalendar currentDate) {
 		this.currentDate = currentDate;
 	}
 

@@ -2,28 +2,24 @@ package model.user;
 
 import java.util.GregorianCalendar;
 
-import model.general.OurDate;
 import model.loan.Loan;
 
 public class Manager extends User {
+	
+	private final static int conversion = 86400000;
 
 	public Manager(String name, String firstname, int id) {
 		super(name, firstname, id);
 	}
 
-	private int calculateDifference(GregorianCalendar startDate, OurDate endDate) {
+	private int calculateDifference(GregorianCalendar startDate, GregorianCalendar endDate) {
 		int result = 0;
 
 		if (startDate.after(endDate))
 			result = -1;
-		else if (startDate.before(endDate)) {
-			if (startDate.MONTH == endDate.MONTH) {
-				result = endDate.DAY_OF_MONTH - startDate.DAY_OF_MONTH;
-			} else
-				result = endDate.DAY_OF_MONTH + (startDate.DAY_OF_MONTH - startDate.g30);
-		}
+		else result = startDate.compareTo(endDate)/conversion;
 
-		return startDate.compareTo(endDate)*;
+		return result;
 	}
 
 	public Loan validateLoan(Loan loan) {

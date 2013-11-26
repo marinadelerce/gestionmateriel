@@ -1,8 +1,9 @@
 package model.loan;
 
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-import model.general.OurDate;
+
 
 public class Loans {
 	
@@ -22,26 +23,26 @@ public class Loans {
 		loans.remove(loan);
 	}
 	
-	public List<Loan> getActiveLoans(OurDate date){
+	public List<Loan> getActiveLoans(GregorianCalendar date){
 		
 		List<Loan> active_loans = new LinkedList<Loan>();
 		
 		for(Loan loan : loans) {
 			
-			if (loan.getEndDate().isPosterior(date) || loan.getEndDate().equals(date)) active_loans.add(loan);
+			if (loan.getEndDate().after(date) || loan.getEndDate().equals(date)) active_loans.add(loan);
 		}
 		
 		return active_loans;
 		
 	}
 	
-	public List<Loan> getFinishedLoans(OurDate date){
+	public List<Loan> getFinishedLoans(GregorianCalendar date){
 		
 		List<Loan> finished_loans = new LinkedList<Loan>();
 		
 		for(Loan loan : loans) {
 			
-			if (loan.getEndDate().isPrevious(date)) finished_loans.add(loan);
+			if (loan.getEndDate().before(date)) finished_loans.add(loan);
 		}
 		
 		return finished_loans;

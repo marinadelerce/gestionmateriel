@@ -1,5 +1,7 @@
 package model.general;
 
+import java.util.GregorianCalendar;
+
 import model.material.MaterialType;
 import model.user.Borrower;
 
@@ -8,7 +10,7 @@ public class GeneralManager {
 	UserManager userManager;
 
 	public boolean book(Borrower borrower, MaterialType material,
-			OurDate startDate, OurDate endDate, int quantity) throws Exception {
+			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) throws Exception {
 		if (userManager.book(borrower, material, startDate, endDate, quantity)) {
 			materialManager.book(material, borrower, quantity, startDate,
 					endDate);

@@ -1,5 +1,6 @@
 package model.general;
 
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 import model.loan.Loans;
@@ -21,11 +22,11 @@ public class MaterialManager {
 		reservations = new Reservations();
 	}
 	
-	public int calculateMaxDurationLoan(MaterialType material, OurDate date){
+	public int calculateMaxDurationLoan(MaterialType material, GregorianCalendar date){
 		return 0;
 	}
 	
-	public Stock predictStock(OurDate date) throws Exception{
+	public Stock predictStock(GregorianCalendar date) throws Exception{
 		
 		// stock a l'instant
 		Stock stock_clone = (Stock) stock.clone();
@@ -57,7 +58,7 @@ public class MaterialManager {
 		return stock_clone;
 	}
 	
-	public boolean book(MaterialType material, Borrower borrower, int quantity, OurDate startDate, OurDate endDate) throws Exception{
+	public boolean book(MaterialType material, Borrower borrower, int quantity, GregorianCalendar startDate, GregorianCalendar endDate) throws Exception{
 		
 	/*	// stock prevu a la date t
 		Stock predicted_stock;
