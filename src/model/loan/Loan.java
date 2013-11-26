@@ -13,7 +13,7 @@ public class Loan {
 	private int quantity;
 	private boolean effective;
 	private boolean validate;
-	
+	//nfdcdsc
 
 	public Loan(Borrower borrower, MaterialType material, int quantity, Date startDate, Date endDate, boolean effective, boolean validate){
 		this.startDate = startDate;
