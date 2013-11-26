@@ -8,11 +8,12 @@ public abstract class MaterialType {
 	private int reference;
 	private int maxTimeLoan;
 	
-	public MaterialType(String name, String brand, String description, int reference){
+	public MaterialType(String name, String brand, String description, int reference, int maxTimeLoan){
 		this.name = name;
 		this.brand = brand;
 		this.description = description;
 		this.reference = reference;
+		this.maxTimeLoan = maxTimeLoan;
 	}
 	
 	public String getName(){
