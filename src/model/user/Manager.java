@@ -37,5 +37,10 @@ public class Manager extends User {
 
 		return loan;
 	}
+	
+	@Override
+	public String toString(){
+		return "Admin: " + this.getFirstname() + " " + this.getName() + "id: " + this.getId();
+	}
 
 }

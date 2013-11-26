@@ -13,4 +13,8 @@ public abstract class Device extends MaterialType {
 	public OS getTypeOS() {
 		return typeOs;
 	}
+	
+	public String toString(){
+		return this.getName() + " marque: " + this.getBrand() + "ref: " + this.getReference() + "OS: " + this.getTypeOS();
+	}
 }

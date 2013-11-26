@@ -17,4 +17,9 @@ public abstract class Borrower extends User{
 		Borrower.loanDuration = loanDuration;
 	}
 	
+	@Override
+	public String toString(){
+		return "User: " + this.getFirstname() + " " + this.getName() + "id: " + this.getId();
+	}
+	
 }

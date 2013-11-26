@@ -6,4 +6,9 @@ public class HeadPhone extends MaterialType {
 			int reference, int maxTimeLoan, int serialNumber) {
 		super(name, brand, description, reference, maxTimeLoan, serialNumber);
 	}
+	
+	public String toString() {
+		return this.getName() + " marque: " + this.getBrand() + "ref: "
+				+ this.getReference();
+	} //FIXME même methode pour videoCam et headPhones
 }
