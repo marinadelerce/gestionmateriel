@@ -1,21 +1,20 @@
 package model.loan;
 
-import model.general.Date;
+import model.general.OurDate;
 import model.material.MaterialType;
 import model.user.Borrower;
 
 
 public class Loan {
-	private Date startDate;
-	private Date endDate;
+	private OurDate startDate;
+	private OurDate endDate;
 	private Borrower borrower;
 	private MaterialType material;
 	private int quantity;
 	private boolean effective;
 	private boolean validate;
-	//nfdcdsc
 
-	public Loan(Borrower borrower, MaterialType material, int quantity, Date startDate, Date endDate, boolean effective, boolean validate){
+	public Loan(Borrower borrower, MaterialType material, int quantity, OurDate startDate, OurDate endDate, boolean effective, boolean validate){
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.borrower = borrower;
@@ -26,12 +25,12 @@ public class Loan {
 	}
 
 
-	public Date getStartDate() {
+	public OurDate getStartDate() {
 		return startDate;
 	}
 
 
-	public Date getEndDate() {
+	public OurDate getEndDate() {
 		return endDate;
 	}
 
@@ -61,12 +60,12 @@ public class Loan {
 	}
 
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(OurDate startDate) {
 		this.startDate = startDate;
 	}
 
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(OurDate endDate) {
 		this.endDate = endDate;
 	}
 

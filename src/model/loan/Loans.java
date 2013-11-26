@@ -2,7 +2,7 @@ package model.loan;
 
 import java.util.LinkedList;
 import java.util.List;
-import model.general.Date;
+import model.general.OurDate;
 
 public class Loans {
 	
@@ -22,7 +22,7 @@ public class Loans {
 		loans.remove(loan);
 	}
 	
-	public List<Loan> getActiveLoans(Date date){
+	public List<Loan> getActiveLoans(OurDate date){
 		
 		List<Loan> active_loans = new LinkedList<Loan>();
 		
@@ -35,7 +35,7 @@ public class Loans {
 		
 	}
 	
-	public List<Loan> getFinishedLoans(Date date){
+	public List<Loan> getFinishedLoans(OurDate date){
 		
 		List<Loan> finished_loans = new LinkedList<Loan>();
 		

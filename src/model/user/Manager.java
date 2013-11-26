@@ -1,6 +1,8 @@
 package model.user;
 
-import model.general.Date;
+import java.util.GregorianCalendar;
+
+import model.general.OurDate;
 import model.loan.Loan;
 
 public class Manager extends User {
@@ -9,20 +11,19 @@ public class Manager extends User {
 		super(name, firstname, id);
 	}
 
-	public int calculateDifference(Date startDate, Date endDate) {
+	private int calculateDifference(GregorianCalendar startDate, OurDate endDate) {
 		int result = 0;
 
-		if (startDate.isPosterior(endDate))
+		if (startDate.after(endDate))
 			result = -1;
-		else if (startDate.isPrevious(endDate)) {
-			if (startDate.getMonth() == endDate.getMonth()) {
-				result = endDate.getDay() - startDate.getDay();
+		else if (startDate.before(endDate)) {
+			if (startDate.MONTH == endDate.MONTH) {
+				result = endDate.DAY_OF_MONTH - startDate.DAY_OF_MONTH;
 			} else
-				result = endDate.getDay() + (startDate.getDay() - 30);
+				result = endDate.DAY_OF_MONTH + (startDate.DAY_OF_MONTH - startDate.g30);
 		}
 
-		// On compte des journées de 8 heures
-		return result * 8;
+		return startDate.compareTo(endDate)*;
 	}
 
 	public Loan validateLoan(Loan loan) {

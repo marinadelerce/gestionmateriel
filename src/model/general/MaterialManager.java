@@ -21,11 +21,11 @@ public class MaterialManager {
 		reservations = new Reservations();
 	}
 	
-	public int calculateMaxDurationLoan(MaterialType material, Date date){
+	public int calculateMaxDurationLoan(MaterialType material, OurDate date){
 		return 0;
 	}
 	
-	public Stock predictStock(Date date) throws Exception{
+	public Stock predictStock(OurDate date) throws Exception{
 		
 		// stock a l'instant
 		Stock stock_clone = (Stock) stock.clone();
@@ -57,28 +57,28 @@ public class MaterialManager {
 		return stock_clone;
 	}
 	
-	public boolean reserver(MaterialType material, Borrower borrower, int quantity, Date startDate, Date endDate) throws Exception{
+	public boolean book(MaterialType material, Borrower borrower, int quantity, OurDate startDate, OurDate endDate) throws Exception{
 		
-		// stock prevu a la date t
-		Stock stock_anticipe;
+	/*	// stock prevu a la date t
+		Stock predicted_stock;
 		
 		// on verifie que la quantite de materiel est disponible pendant toute la duree de l'emprunt
-		Date date_virtuelle = (Date) startDate.clone();
+		OurDate virtual_date = (OurDate) startDate.clone();
 		
 		do{
 			
-			stock_anticipe = predictStock(date_virtuelle);
+			predicted_stock = predictStock(virtual_date);
 			
 			// si il n'y a pas assez de ce type de materiel a la date t  on refuse l'emprunt
-			if (stock_anticipe.getStock(material) < quantity) return false;
+			if (predicted_stock.getStock(material) < quantity) return false;
 			
-			date_virtuelle.nextHour();
-		} while (date_virtuelle.isPrevious(endDate) || date_virtuelle.equals(endDate));
+			virtual_date.nextHour();
+		} while (virtual_date.isPrevious(endDate) || virtual_date.equals(endDate));
 		
 		// on crée l'emprunt
 		Loan loan = new Loan(borrower, material, quantity, startDate, endDate, false, false);
 		reservations.add(loan);
-		
+		*/
 		return true;
 	}
 }

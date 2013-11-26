@@ -3,7 +3,7 @@ package model.loan;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.general.Date;
+import model.general.OurDate;
 
 public class Reservations {
 	
@@ -23,7 +23,7 @@ public class Reservations {
 		reservations.remove(loan);
 	}
 	
-	public List<Loan> getActiveReservations(Date date){
+	public List<Loan> getActiveReservations(OurDate date){
 		
 		List<Loan> active_reservations = new LinkedList<Loan>();
 		

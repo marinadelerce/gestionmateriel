@@ -7,10 +7,10 @@ import model.user.Users;
 public class UserManager {
 	
 	private Users users;
-	private Date currentDate;
+	private OurDate currentDate;
 	private MaterialManager manager;
 	
-	public boolean book(Borrower borrower, MaterialType material, Date startDate, Date endDate, int quantity){
+	public boolean book(Borrower borrower, MaterialType material, OurDate startDate, OurDate endDate, int quantity){
 		
 		boolean book = true;
 		int duration;
@@ -37,11 +37,11 @@ public class UserManager {
 		this.users = users;
 	}
 
-	public Date getCurrentDate() {
+	public OurDate getCurrentDate() {
 		return currentDate;
 	}
 
-	public void setCurrentDate(Date currentDate) {
+	public void setCurrentDate(OurDate currentDate) {
 		this.currentDate = currentDate;
 	}
 
