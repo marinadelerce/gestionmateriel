@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import model.loan.Loans;
 import model.loan.Loan;
 import model.loan.Reservations;
-import model.material.MaterialType;
+import model.material.Material;
 import model.material.Stock;
 import model.user.Borrower;
 
@@ -22,7 +22,7 @@ public class MaterialManager {
 		reservations = new Reservations();
 	}
 
-	public int calculateMaxDurationLoan(MaterialType material,
+	public int calculateMaxDurationLoan(Material material,
 			GregorianCalendar date) {
 		return 0;
 	}
@@ -36,7 +36,7 @@ public class MaterialManager {
 		LinkedList<Loan> finished_loans = (LinkedList<Loan>) loans
 				.getFinishedLoans(date);
 		for (Loan emprunt : finished_loans) {
-			MaterialType material = emprunt.getMaterial();
+			Material material = emprunt.getMaterial();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.add(material);
@@ -46,7 +46,7 @@ public class MaterialManager {
 		LinkedList<Loan> active_loans = (LinkedList<Loan>) loans
 				.getActiveLoans(date);
 		for (Loan emprunt : active_loans) {
-			MaterialType material = emprunt.getMaterial();
+			Material material = emprunt.getMaterial();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.remove(material);
@@ -56,7 +56,7 @@ public class MaterialManager {
 		LinkedList<Loan> reserves = (LinkedList<Loan>) reservations
 				.getActiveReservations(date);
 		for (Loan emprunt : reserves) {
-			MaterialType material = emprunt.getMaterial();
+			Material material = emprunt.getMaterial();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.remove(material);
@@ -65,31 +65,30 @@ public class MaterialManager {
 		return stock_clone;
 	}
 
-	public boolean book(MaterialType material, Borrower borrower, int quantity,
-			GregorianCalendar startDate, GregorianCalendar endDate)
-			throws Exception {
+	public boolean book(Material material, Borrower borrower, int quantity, GregorianCalendar startDate, GregorianCalendar endDate) throws Exception {
 
-		/*
-		 * // stock prevu a la date t Stock predicted_stock;
-		 * 
-		 * // on verifie que la quantite de materiel est disponible pendant
-		 * toute la duree de l'emprunt OurDate virtual_date = (OurDate)
-		 * startDate.clone();
-		 * 
-		 * do{
-		 * 
-		 * predicted_stock = predictStock(virtual_date);
-		 * 
-		 * // si il n'y a pas assez de ce type de materiel a la date t on refuse
-		 * l'emprunt if (predicted_stock.getStock(material) < quantity) return
-		 * false;
-		 * 
-		 * virtual_date.nextHour(); } while (virtual_date.isPrevious(endDate) ||
-		 * virtual_date.equals(endDate));
-		 * 
-		 * // on crée l'emprunt Loan loan = new Loan(borrower, material,
-		 * quantity, startDate, endDate, false, false); reservations.add(loan);
-		 */
+		
+		  // stock prevu a la date t 
+		  Stock predicted_stock;
+		  
+		  // on verifie que la quantite de materiel est disponible pendant toute la duree de l'emprunt 
+		  GregorianCalendar virtual_date =  (GregorianCalendar) startDate.clone();
+		  
+		  do{
+		  
+			  predicted_stock = predictStock(virtual_date);
+			  
+			  // si il n'y a pas assez de ce type de materiel a la date t on refuse l'emprunt 
+			  if (predicted_stock.getStock(material) < quantity) 
+				  return false;
+			  
+			  virtual_date.add(GregorianCalendar.DAY_OF_MONTH, 1);
+		  
+		  } while (virtual_date.before(endDate) || virtual_date.equals(endDate));
+		 
+		  // on crée l'emprunt 
+		  Loan loan = new Loan(borrower, material, quantity, startDate, endDate, false, false); reservations.add(loan);
+		 
 		return true;
 	}
 }

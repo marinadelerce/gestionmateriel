@@ -2,18 +2,17 @@ package model.general;
 
 import java.util.GregorianCalendar;
 
-import model.material.MaterialType;
+import model.material.Material;
 import model.user.Borrower;
 import model.user.Users;
 
 public class UserManager {
 	
 	private Users users;
-	private GregorianCalendar currentDate;
 	private MaterialManager manager;
 	private final static int conversion = 86400000;
 	
-	public boolean book(Borrower borrower, MaterialType material, GregorianCalendar startDate, GregorianCalendar endDate, int quantity){
+	public boolean book(Borrower borrower, Material material, GregorianCalendar startDate, GregorianCalendar endDate, int quantity){
 		
 		boolean book = true;
 		int duration;
@@ -35,14 +34,6 @@ public class UserManager {
 
 	public void setUsers(Users users) {
 		this.users = users;
-	}
-
-	public GregorianCalendar getCurrentDate() {
-		return currentDate;
-	}
-
-	public void setCurrentDate(GregorianCalendar currentDate) {
-		this.currentDate = currentDate;
 	}
 
 	public MaterialManager getManager() {

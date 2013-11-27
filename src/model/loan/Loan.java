@@ -2,19 +2,19 @@ package model.loan;
 
 import java.util.GregorianCalendar;
 
-import model.material.MaterialType;
+import model.material.Material;
 import model.user.Borrower;
 
 public class Loan {
 	private GregorianCalendar startDate;
 	private GregorianCalendar endDate;
 	private Borrower borrower;
-	private MaterialType material;
+	private Material material;
 	private int quantity;
 	private boolean effective;
 	private boolean validate;
 
-	public Loan(Borrower borrower, MaterialType material, int quantity,
+	public Loan(Borrower borrower, Material material, int quantity,
 			GregorianCalendar startDate, GregorianCalendar endDate,
 			boolean effective, boolean validate) {
 		this.startDate = startDate;
@@ -38,7 +38,7 @@ public class Loan {
 		return borrower;
 	}
 
-	public MaterialType getMaterial() {
+	public Material getMaterial() {
 		return material;
 	}
 
@@ -66,7 +66,7 @@ public class Loan {
 		this.borrower = borrower;
 	}
 
-	public void setMaterial(MaterialType material) {
+	public void setMaterial(Material material) {
 		this.material = material;
 	}
 
