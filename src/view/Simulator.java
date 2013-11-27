@@ -3,8 +3,8 @@ package view;
 import java.util.List;
 import java.util.Scanner;
 
-import model.general.GeneralManager;
-import model.material.MaterialType;
+import controller.GeneralManager;
+import model.material.Material;
 import model.material.Stock;
 import model.user.Borrower;
 import model.user.Manager;
@@ -173,11 +173,11 @@ public class Simulator {
 		return userConnected;
 	}
 
-	public MaterialType chooseMaterial() {
+	public Material chooseMaterial() {
 		String name;
 		Stock stock = new Stock();
-		List<MaterialType> materials;
-		MaterialType chosenMaterial = null;
+		List<Material> materials;
+		Material chosenMaterial = null;
 		int nb;
 
 		Scanner read = new Scanner(System.in);

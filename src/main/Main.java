@@ -1,6 +1,6 @@
 package main;
 
-import model.general.GeneralManager;
+import controller.GeneralManager;
 
 public class Main {
 	

@@ -1,4 +1,4 @@
-package model.general;
+package controller;
 
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
