@@ -8,8 +8,8 @@ public class Manager extends User {
 	
 	private final static int conversion = 86400000;
 
-	public Manager(String name, String firstname, int id) {
-		super(name, firstname, id);
+	public Manager(String name, String firstname, String login, String password) {
+		super(name, firstname, login, password);
 	}
 
 	private int calculateDifference(GregorianCalendar startDate, GregorianCalendar endDate) {
@@ -40,7 +40,7 @@ public class Manager extends User {
 	
 	@Override
 	public String toString(){
-		return "Admin: " + this.getFirstname() + " " + this.getName() + "id: " + this.getId();
+		return "Admin: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
 
 }

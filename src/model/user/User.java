@@ -2,28 +2,38 @@ package model.user;
 
 public abstract class User {
 	
-	protected String name;
+	protected String lastname;
 	protected String firstname;
-	protected int id;
+	protected String login;
 	protected String password;
 	
-	public User(String name, String firstname, int id){
-		this.name = name;
+	
+	public User(String name, String firstname, String login, String password){
+		this.lastname = name;
 		this.firstname = firstname;
-		this.id = id;
-		this.password = null;
+		this.login = login;
+		this.password = password;
 	}
 	
 	public String getName(){
-		return name;
+		return lastname;
 	}
 	
 	public String getFirstname(){
 		return firstname;
 	}
 	
-	public int getId(){
-		return id;
+	public String getLogin(){
+		return login;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	
 }

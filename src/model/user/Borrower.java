@@ -4,8 +4,8 @@ public abstract class Borrower extends User{
 
 	private static int loanDuration;
 	
-	public Borrower(String name, String firstname, int id, int loanDuration){
-		super(name, firstname, id);
+	public Borrower(String name, String firstname, String login, String password, int loanDuration){
+		super(name, firstname, login, password);
 		setLoanDuration(loanDuration);
 	}
 
@@ -19,7 +19,7 @@ public abstract class Borrower extends User{
 	
 	@Override
 	public String toString(){
-		return "User: " + this.getFirstname() + " " + this.getName() + "id: " + this.getId();
+		return "User: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
 	
 }
