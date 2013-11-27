@@ -3,13 +3,14 @@ package model.general;
 import java.util.GregorianCalendar;
 
 import view.Simulator;
-import model.material.MaterialType;
+import model.material.Material;
 import model.user.Borrower;
 import model.user.User;
 
 public class GeneralManager {
 	private MaterialManager materialManager;
 	private UserManager userManager;
+	private GregorianCalendar currentDate;
 	private Simulator simulator;
 
 	public GeneralManager(){
@@ -28,9 +29,8 @@ public class GeneralManager {
 		return userManager.addNewUser(userType, lastname, firstname, login, password);
 	}
 
-	public boolean book(Borrower borrower, MaterialType material,
-			GregorianCalendar startDate, GregorianCalendar endDate, int quantity)
-			throws Exception {
+	public boolean book(Borrower borrower, Material material,
+			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) throws Exception {
 		if (userManager.book(borrower, material, startDate, endDate, quantity)) {
 			materialManager.book(material, borrower, quantity, startDate,
 					endDate);
@@ -49,6 +49,13 @@ public class GeneralManager {
 
 	public void signOff() {
 		userManager.signOff();
-		
+	}
+	
+	public GregorianCalendar getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(GregorianCalendar currentDate) {
+		this.currentDate = currentDate;
 	}
 }

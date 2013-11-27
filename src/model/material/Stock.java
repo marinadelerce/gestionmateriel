@@ -6,17 +6,18 @@ import java.util.Map.Entry;
 
 public class Stock {
 	
-	private Map<MaterialType, Integer> stock;
+	private Map<Material, Integer> stock;
+	//private int nbRef;
 	
 	public Stock(){
-		stock = new HashMap<MaterialType, Integer>();
+		stock = new HashMap<Material, Integer>();
 	}
 	
-	public Stock(Map<MaterialType, Integer> stock2){
+	public Stock(Map<Material, Integer> stock2){
 		this.stock = stock2;
 	}
 	
-	public void add(MaterialType material){
+	public void add(Material material){
 		if (!stock.containsKey(material)){
 			stock.put(material, new Integer(1));
 		}
@@ -26,7 +27,7 @@ public class Stock {
 		}
 	}
 	
-	public void remove(MaterialType material) throws Exception{
+	public void remove(Material material) throws Exception{
 		
 		if(!stock.containsKey(material)){
 			throw new Exception("L'objet demandé est absent du stock");
@@ -40,9 +41,9 @@ public class Stock {
 	
 	public void remove(int reference) throws Exception{
 		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
+		for(Entry<Material, Integer> entry : stock.entrySet()) {
 			
-		    MaterialType material = entry.getKey();
+		    Material material = entry.getKey();
 		    
 		    if (material.getReference() == reference){
 		    	remove(material);
@@ -53,16 +54,16 @@ public class Stock {
 		throw new Exception("Référence inexistante dans en stock");
 	}
 	
-	public Integer getStock(MaterialType material){
+	public Integer getStock(Material material){
 		if (!stock.containsKey(material)) return new Integer(0);
 		else return stock.get(material);
 	}
 	
 	public Integer getStock(int reference){
 		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
+		for(Entry<Material, Integer> entry : stock.entrySet()) {
 			
-		    MaterialType material = entry.getKey();
+		    Material material = entry.getKey();
 		    
 		    if (material.getReference() == reference){
 		    	return getStock(material);
@@ -72,13 +73,16 @@ public class Stock {
 		return new Integer(0);
 	}
 	
-	public MaterialType getObject(int reference) throws Exception{
+	public Material getObject(int reference) throws Exception{
 		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
+		for(Entry<Material, Integer> entry : stock.entrySet()) {
 			
-		    MaterialType material = entry.getKey();
+		    Material material = entry.getKey();
 		    
 		    if (material.getReference() == reference){
+		    	
+		    	Material newMaterial = (Material) material.clone();
+		    	
 		    	return material;
 		    }
 		}

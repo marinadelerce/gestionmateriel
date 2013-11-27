@@ -1,6 +1,6 @@
 package model.material;
 
-public abstract class Device extends MaterialType {
+public abstract class Device extends Material {
 
 	private OS typeOs;
 
@@ -18,4 +18,5 @@ public abstract class Device extends MaterialType {
 		return this.getName() + " marque: " + this.getBrand() + "ref: "
 				+ this.getReference() + "OS: " + this.getTypeOS();
 	}
+	
 }

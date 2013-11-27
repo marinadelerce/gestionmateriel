@@ -1,6 +1,6 @@
 package model.material;
 
-public abstract class MaterialType {
+public abstract class Material{
 
 	private String name;
 	private String brand;
@@ -9,7 +9,7 @@ public abstract class MaterialType {
 	private int serialNumber;
 	private int maxTimeLoan;
 
-	public MaterialType(String name, String brand, String description,
+	public Material(String name, String brand, String description,
 			int reference, int maxTimeLoan, int serialNumber) {
 		this.name = name;
 		this.brand = brand;
@@ -49,5 +49,10 @@ public abstract class MaterialType {
 
 	public void setSerialNumber(int serialNumber) {
 		this.serialNumber = serialNumber;
+	}
+	
+	@Override
+	public Object clone(){
+		return null;
 	}
 }
