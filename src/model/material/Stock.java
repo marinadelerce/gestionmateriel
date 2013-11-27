@@ -7,10 +7,11 @@ import java.util.Map.Entry;
 public class Stock {
 	
 	private Map<Material, Integer> stock;
-	//private int nbRef;
+	private int currentSerialNumber;
 	
 	public Stock(){
 		stock = new HashMap<Material, Integer>();
+		currentSerialNumber=0;
 	}
 	
 	public Stock(Map<Material, Integer> stock2){
@@ -82,13 +83,18 @@ public class Stock {
 		    if (material.getReference() == reference){
 		    	
 		    	Material newMaterial = (Material) material.clone();
+		    	newMaterial.setSerialNumber(getNewSerialNumber());
 		    	
-		    	return material;
+		    	return newMaterial;
 		    }
 		}
 		
 		throw new Exception("Référence inexistante dans le stock");
 		
+	}
+	
+	public int getNewSerialNumber(){
+		return currentSerialNumber++;
 	}
 	
 	@Override
