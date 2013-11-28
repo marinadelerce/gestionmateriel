@@ -6,19 +6,20 @@ import java.util.Map.Entry;
 
 public class Stock {
 	
-	private Map<Material, Integer> stock;
+	private Map<MaterialType, Integer> stock;
 	private int currentSerialNumber;
+	private final String SAVE_FILE = "";
 	
 	public Stock(){
-		stock = new HashMap<Material, Integer>();
+		stock = new HashMap<MaterialType, Integer>();
 		currentSerialNumber=0;
 	}
 	
-	public Stock(Map<Material, Integer> stock2){
+	public Stock(Map<MaterialType, Integer> stock2){
 		this.stock = stock2;
 	}
 	
-	public void add(Material material){
+	public void add(MaterialType material){
 		if (!stock.containsKey(material)){
 			stock.put(material, new Integer(1));
 		}
@@ -28,7 +29,7 @@ public class Stock {
 		}
 	}
 	
-	public void remove(Material material) throws Exception{
+	public void remove(MaterialType material) throws Exception{
 		
 		if(!stock.containsKey(material)){
 			throw new Exception("L'objet demandé est absent du stock");
@@ -42,9 +43,9 @@ public class Stock {
 	
 	public void remove(int reference) throws Exception{
 		
-		for(Entry<Material, Integer> entry : stock.entrySet()) {
+		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
 			
-		    Material material = entry.getKey();
+		    MaterialType material = entry.getKey();
 		    
 		    if (material.getReference() == reference){
 		    	remove(material);
@@ -55,16 +56,16 @@ public class Stock {
 		throw new Exception("Référence inexistante dans en stock");
 	}
 	
-	public Integer getStock(Material material){
+	public Integer getStock(MaterialType material){
 		if (!stock.containsKey(material)) return new Integer(0);
 		else return stock.get(material);
 	}
 	
 	public Integer getStock(int reference){
 		
-		for(Entry<Material, Integer> entry : stock.entrySet()) {
+		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
 			
-		    Material material = entry.getKey();
+		    MaterialType material = entry.getKey();
 		    
 		    if (material.getReference() == reference){
 		    	return getStock(material);
@@ -76,16 +77,14 @@ public class Stock {
 	
 	public Material getObject(int reference) throws Exception{
 		
-		for(Entry<Material, Integer> entry : stock.entrySet()) {
+		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
 			
-		    Material material = entry.getKey();
+		    MaterialType materialtype = entry.getKey();
 		    
-		    if (material.getReference() == reference){
+		    if (materialtype.getReference() == reference){
 		    	
-		    	Material newMaterial = (Material) material.clone();
-		    	newMaterial.setSerialNumber(getNewSerialNumber());
-		    	
-		    	return newMaterial;
+		    	return new Material(materialtype, Integer.toString(getNewSerialNumber()));
+
 		    }
 		}
 		
@@ -93,8 +92,16 @@ public class Stock {
 		
 	}
 	
+	public HashMap<MaterialType, Integer> getStock(){
+		return (HashMap<MaterialType, Integer>) stock;
+	}
+	
 	public int getNewSerialNumber(){
 		return currentSerialNumber++;
+	}
+	
+	public void save(){
+		// save stock in the file
 	}
 	
 	@Override

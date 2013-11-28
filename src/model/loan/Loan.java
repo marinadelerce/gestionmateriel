@@ -3,9 +3,11 @@ package model.loan;
 import java.util.GregorianCalendar;
 
 import model.material.Material;
+import model.material.MaterialType;
 import model.user.Borrower;
 
 public class Loan {
+	
 	private GregorianCalendar startDate;
 	private GregorianCalendar endDate;
 	private Borrower borrower;

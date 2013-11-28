@@ -1,36 +1,28 @@
-package controller;
+package model.manager;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
-import view.Simulator;
-import model.material.Material;
+import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.User;
 
 public class GeneralManager {
+	
 	private MaterialManager materialManager;
 	private UserManager userManager;
 	private GregorianCalendar currentDate;
-	private Simulator simulator;
 
 	public GeneralManager(){
 		materialManager = new MaterialManager();
 		userManager = new UserManager();
-		populate();
-		simulator = new Simulator(this);
 	}
 	
-	private void populate() {
-		userManager.addNewUser("Manager", "Sander", "Peter", "sander","ps");
-		userManager.addNewUser("Student", "Delerce", "Marina", "mutti", "md");
-		
-		
-	}
 	public boolean addNewUser(String userType, String lastname, String firstname, String login, String password){
 		return userManager.addNewUser(userType, lastname, firstname, login, password);
 	}
 
-	public boolean book(Borrower borrower, Material material,
+	public boolean book(Borrower borrower, MaterialType material,
 			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) throws Exception {
 		if (userManager.book(borrower, material, startDate, endDate, quantity)) {
 			materialManager.book(material, borrower, quantity, startDate,
@@ -62,5 +54,14 @@ public class GeneralManager {
 
 	public boolean deleteUser(String lastname, String firstname, String login) {
 		return userManager.deleteUser(lastname, firstname, login);
+	}
+	
+	public HashMap<MaterialType, Integer> getStock(){
+		return materialManager.getStock();
+	}
+	
+	public void save(){
+		materialManager.save();
+		userManager.save();
 	}
 }

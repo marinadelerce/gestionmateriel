@@ -1,12 +1,14 @@
-package controller;
+package model.manager;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import model.loan.Loans;
 import model.loan.Loan;
 import model.loan.Reservations;
 import model.material.Material;
+import model.material.MaterialType;
 import model.material.Stock;
 import model.user.Borrower;
 
@@ -22,7 +24,7 @@ public class MaterialManager {
 		reservations = new Reservations();
 	}
 
-	public int calculateMaxDurationLoan(Material material,
+	public int calculateMaxDurationLoan(MaterialType material,
 			GregorianCalendar date) {
 		return 0;
 	}
@@ -36,7 +38,7 @@ public class MaterialManager {
 		LinkedList<Loan> finished_loans = (LinkedList<Loan>) loans
 				.getFinishedLoans(date);
 		for (Loan emprunt : finished_loans) {
-			Material material = emprunt.getMaterial();
+			MaterialType material = emprunt.getMaterial().getMaterialType();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.add(material);
@@ -46,7 +48,7 @@ public class MaterialManager {
 		LinkedList<Loan> active_loans = (LinkedList<Loan>) loans
 				.getActiveLoans(date);
 		for (Loan emprunt : active_loans) {
-			Material material = emprunt.getMaterial();
+			MaterialType material = emprunt.getMaterial().getMaterialType();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.remove(material);
@@ -56,7 +58,7 @@ public class MaterialManager {
 		LinkedList<Loan> reserves = (LinkedList<Loan>) reservations
 				.getActiveReservations(date);
 		for (Loan emprunt : reserves) {
-			Material material = emprunt.getMaterial();
+			MaterialType material = emprunt.getMaterial().getMaterialType();
 			Integer quantity = emprunt.getQuantity();
 			for (int i = 0; i < quantity; i++)
 				stock_clone.remove(material);
@@ -65,7 +67,7 @@ public class MaterialManager {
 		return stock_clone;
 	}
 
-	public boolean book(Material material, Borrower borrower, int quantity, GregorianCalendar startDate, GregorianCalendar endDate) throws Exception {
+	public boolean book(MaterialType materialT, Borrower borrower, int quantity, GregorianCalendar startDate, GregorianCalendar endDate) throws Exception {
 
 		
 		  // stock prevu a la date t 
@@ -79,16 +81,29 @@ public class MaterialManager {
 			  predicted_stock = predictStock(virtual_date);
 			  
 			  // si il n'y a pas assez de ce type de materiel a la date t on refuse l'emprunt 
-			  if (predicted_stock.getStock(material) < quantity) 
+			  if (predicted_stock.getStock(materialT) < quantity) 
 				  return false;
 			  
 			  virtual_date.add(GregorianCalendar.DAY_OF_MONTH, 1);
 		  
 		  } while (virtual_date.before(endDate) || virtual_date.equals(endDate));
 		 
+		  // on récupère un materiel du stock
+		  Material material = stock.getObject(materialT.getReference());
+		  
 		  // on crée l'emprunt 
-		  Loan loan = new Loan(borrower, material, quantity, startDate, endDate, false, false); reservations.add(loan);
+		  Loan loan = new Loan(borrower, material, quantity, startDate, endDate, false, false); 
+		  reservations.add(loan);
 		 
 		return true;
+	}
+	
+	public HashMap<MaterialType, Integer> getStock(){
+		return stock.getStock();
+	}
+	
+	public void save(){
+		loans.save();
+		reservations.save();
 	}
 }

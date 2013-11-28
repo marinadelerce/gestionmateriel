@@ -1,9 +1,10 @@
-package controller;
+package model.manager;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import model.material.Material;
+
+import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Manager;
 import model.user.Student;
@@ -12,14 +13,14 @@ import model.user.User;
 import model.user.Users;
 
 public class UserManager {
-	private ArrayList<User> users;
+	
+	private Users users;
 	private User connectedUser;
 	private GregorianCalendar currentDate;
-	private MaterialManager manager;
 	private final static int conversion = 86400000;
 
 	public UserManager() {
-		this.users = new ArrayList<User>();
+		this.users = new Users();
 		this.connectedUser = null;
 	}
 
@@ -48,14 +49,10 @@ public class UserManager {
 	}
 
 	private boolean checkSameUser(String login) {
-		for (User user : users) {
-			if (user.getLogin().equals(login))
-				return true;
-		}
-		return false;
+		return users.checkSameUser(login);
 	}
 
-	public boolean book(Borrower borrower, Material material,
+	public boolean book(Borrower borrower, MaterialType material,
 			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) {
 		boolean book = true;
 		int duration;
@@ -72,29 +69,9 @@ public class UserManager {
 		return book;
 	}
 
-	/*
-	 * public Users getUsers() { return users; }
-	 * 
-	 * public void setUsers(Users users) { this.users = users; }
-	 */
-
-	public MaterialManager getManager() {
-		return manager;
-	}
-
-	public void setManager(MaterialManager manager) {
-		this.manager = manager;
-	}
-
 	public boolean checkUserPassword(String login, String password) {
-		for (User user : users) {
-			if ((user.getLogin().equals(login))
-					&& (user.getPassword().equals(password))) {
-				connectedUser = user;
-				return true;
-			}
-		}
-		return false;
+		if ((connectedUser = users.checkUserPassword(login, password))!=null) return true;
+		else return false;
 	}
 
 	public User getConnectedUser() {
@@ -107,17 +84,10 @@ public class UserManager {
 	}
 
 	public boolean deleteUser(String lastname, String firstname, String login) {
-		User deletedUser = null;
-		boolean isDeleted = true;
-		for(User user : users){
-			if (user.getName().equals(lastname) && user.getFirstname().equals(firstname) && user.getLogin().equals(login))
-				deletedUser = user;
-		}
-		if (deletedUser != null) 
-			this.users.remove(deletedUser);
-		else  
-			isDeleted = false;
-		
-		return isDeleted;
+		return users.deleteUser(lastname, firstname, login);
+	}
+	
+	public void save(){
+		users.save();
 	}
 }

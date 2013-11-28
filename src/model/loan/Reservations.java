@@ -8,6 +8,7 @@ import java.util.List;
 public class Reservations {
 	
 	private List<Loan> reservations;
+	private final String SAVE_FILE = "";
 	
 	public Reservations(){
 		reservations = new LinkedList<Loan>();
@@ -35,5 +36,9 @@ public class Reservations {
 		
 		return active_reservations;
 		
+	}
+	
+	public void save(){
+		// save reservations in the save file
 	}
 }

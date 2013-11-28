@@ -1,12 +1,15 @@
 package main;
 
-import controller.GeneralManager;
+import controller.Controller;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		new GeneralManager();
-
+		
+		// chargement des fichiers de configuration
+		// chargement des fichiers de données
+		Controller c = new Controller();
+		c.start();
 	}
 
 }

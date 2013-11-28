@@ -29,7 +29,7 @@ public class Manager extends User {
 		
 		int loanHours = calculateDifference(loan.getStartDate(),
 				loan.getEndDate());
-		if (loanHours <= loan.getMaterial().getMaxTimeLoan()) {
+		if (loanHours <= loan.getMaterial().getMaterialType().getMaxTimeLoan()) {
 			if (loanHours <= loan.getBorrower().getLoanDuration()) {
 				loan.setValidate(true);
 			}

@@ -2,6 +2,7 @@ package controller;
 
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
+import model.manager.UserManager;
 import model.user.Manager;
 import model.user.Student;
 import model.user.Teacher;
@@ -10,7 +11,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import controller.UserManager;
 
 public class UserManagerTest extends TestCase {
 

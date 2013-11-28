@@ -8,6 +8,7 @@ import java.util.List;
 public class Loans {
 	
 	private List<Loan> loans;
+	private final String SAVE_FILE = "";
 	
 	public Loans(){
 		loans = new LinkedList<Loan>();
@@ -46,5 +47,9 @@ public class Loans {
 		}
 		
 		return finished_loans;
+	}
+	
+	public void save(){
+		// save loans in the save file
 	}
 }
