@@ -22,6 +22,7 @@ public class GeneralManager {
 	
 	private void populate() {
 		userManager.addNewUser("Manager", "Sander", "Peter", "sander","ps");
+		userManager.addNewUser("Student", "Delerce", "Marina", "mutti", "md");
 		
 		
 	}
@@ -57,5 +58,9 @@ public class GeneralManager {
 
 	public void setCurrentDate(GregorianCalendar currentDate) {
 		this.currentDate = currentDate;
+	}
+
+	public boolean deleteUser(String lastname, String firstname, String login) {
+		return userManager.deleteUser(lastname, firstname, login);
 	}
 }

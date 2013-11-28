@@ -64,12 +64,12 @@ public class Simulator {
 
 	private void displayBorrowerMenu() {
 		int choice;
-		System.out.println("1: Quitter");
+		System.out.println("1: Se déconnecter");
 		choice = read.nextInt();
 		read.nextLine();
 		switch(choice){
 		case 1:
-			exit();
+			signOff();
 			break;
 			
 		default:
@@ -80,7 +80,8 @@ public class Simulator {
 	private void displayManagerMenu() {
 		int choice;
 		System.out.println("1: Ajouter un utilisateur");
-		System.out.println("2: Se déconnecter");
+		System.out.println("2: Supprimer un utilisateur");
+		System.out.println("3: Se déconnecter");
 		choice = read.nextInt();
 		read.nextLine();
 		switch(choice){
@@ -89,6 +90,10 @@ public class Simulator {
 			break;
 			
 		case 2:
+			deleteUser();
+			break;
+			
+		case 3:
 			signOff();
 			break;
 			
@@ -96,6 +101,24 @@ public class Simulator {
 			
 		} 
 		displayManagerMenu();
+	}
+
+	private boolean deleteUser() {
+		boolean isDeleted = false;
+		System.out.println("Entrez le nom:");
+		String lastname = read.nextLine();
+		System.out.println("Entrez le prénom:");
+		String firstname = read.nextLine();
+		System.out.println("Entrez le login:");
+		String login = read.nextLine();
+		
+		isDeleted = generalManager.deleteUser(lastname,firstname,login);
+		
+		if(!isDeleted) System.out.println("Echec de la suppression.");
+		else
+			System.out.println("Suppression effectuée !");
+		
+		return isDeleted;
 	}
 
 	private void signOff() {
@@ -115,11 +138,11 @@ public class Simulator {
 			break;
 			
 		case 2:
-			type = "Etudiant";
+			type = "Student";
 			break;
 			
 		case 3:
-			type = "Enseignant";
+			type = "Teacher";
 			break;
 			
 		default:

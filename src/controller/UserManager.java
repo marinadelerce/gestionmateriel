@@ -23,18 +23,21 @@ public class UserManager {
 		this.connectedUser = null;
 	}
 
-	public boolean addNewUser(String userType, String lastname, String firstname,
-			String login, String password) {
+	public boolean addNewUser(String userType, String lastname,
+			String firstname, String login, String password) {
 		if (!checkSameUser(login)) {
 			switch (userType) {
 			case "Manager":
-				this.users.add(new Manager(lastname, firstname, login, password));
+				this.users
+						.add(new Manager(lastname, firstname, login, password));
 				break;
 			case "Teacher":
-				this.users.add(new Teacher(lastname, firstname, login, password));
+				this.users
+						.add(new Teacher(lastname, firstname, login, password));
 				break;
 			case "Student":
-				this.users.add(new Student(lastname, firstname, login, password));
+				this.users
+						.add(new Student(lastname, firstname, login, password));
 				break;
 			default:
 
@@ -45,14 +48,15 @@ public class UserManager {
 	}
 
 	private boolean checkSameUser(String login) {
-		for(User user: users){
-			if(user.getLogin().equals(login))
+		for (User user : users) {
+			if (user.getLogin().equals(login))
 				return true;
 		}
 		return false;
 	}
 
-	public boolean book(Borrower borrower, Material material, GregorianCalendar startDate, GregorianCalendar endDate, int quantity){
+	public boolean book(Borrower borrower, Material material,
+			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) {
 		boolean book = true;
 		int duration;
 		// verifier les dates
@@ -99,6 +103,21 @@ public class UserManager {
 
 	public void signOff() {
 		connectedUser = null;
+
+	}
+
+	public boolean deleteUser(String lastname, String firstname, String login) {
+		User deletedUser = null;
+		boolean isDeleted = true;
+		for(User user : users){
+			if (user.getName().equals(lastname) && user.getFirstname().equals(firstname) && user.getLogin().equals(login))
+				deletedUser = user;
+		}
+		if (deletedUser != null) 
+			this.users.remove(deletedUser);
+		else  
+			isDeleted = false;
 		
+		return isDeleted;
 	}
 }

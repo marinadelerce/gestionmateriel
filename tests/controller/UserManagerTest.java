@@ -45,6 +45,14 @@ public class UserManagerTest extends TestCase {
 	}
 	
 	@Test
+	public void testDeleteUser() {
+		boolean userCreated = this.userManager.addNewUser("Teacher", "Gotti", "Julia", "juju", "titi");
+		assertEquals(userCreated, true);
+		boolean isDeleted = this.userManager.deleteUser("Gotti", "Julia", "juju");
+		assertEquals(isDeleted, true);
+	}
+	
+	@Test
 	public void testAddTwoUsersWithSameLogin() {
 		boolean userCreated = this.userManager.addNewUser("Manager", "Sander", "Peter", "sanderManager", "ps");
 		assertEquals(userCreated, true);
