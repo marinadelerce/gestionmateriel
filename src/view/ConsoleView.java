@@ -1,11 +1,15 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Map.Entry;
+import java.util.TimeZone;
 
+import model.loan.Loan;
+import model.manager.GeneralManager;
 import model.material.MaterialType;
 import model.material.Stock;
 import model.user.Borrower;
@@ -23,7 +27,7 @@ public class ConsoleView {
 		read = new Scanner(System.in);
 	}
 	
-	public void begin(){
+	public void begin() throws Exception{
 		int result;
 	
 		System.out.println("Welcome!");
@@ -48,7 +52,7 @@ public class ConsoleView {
 		}
 	}
 	
-	public void displayMenu() {
+	public void displayMenu() throws Exception {
 		System.out.println("Menu");
 		User connectedUser = controller.getConnectedUser();
 		if(connectedUser == null){
@@ -89,7 +93,7 @@ public class ConsoleView {
 		}
 	}
 	
-	private void displayBorrowerMenu() {
+	private void displayBorrowerMenu() throws Exception {
 		int choice;
 		System.out.println("1: Se déconnecter");
 		System.out.println("2: Emprunter");
@@ -108,11 +112,14 @@ public class ConsoleView {
 		}
 	}
 
-	private void displayManagerMenu() {
+	private void displayManagerMenu() throws Exception {
 		int choice;
 		System.out.println("1: Ajouter un utilisateur");
 		System.out.println("2: Supprimer un utilisateur");
-		System.out.println("3: Se déconnecter");
+		System.out.println("3: Valider une réservation");
+		System.out.println("4: Supprimer une réservation");
+		System.out.println("5: Créer une réservation");
+		System.out.println("6: Se déconnecter");
 		choice = read.nextInt();
 		read.nextLine();
 		switch(choice){
@@ -125,6 +132,18 @@ public class ConsoleView {
 			break;
 			
 		case 3:
+			validateReservation();
+			break;
+			
+		case 4:
+			deleteReservation();
+			break;
+			
+		case 5:
+			borrowMenu();
+			break;
+			
+		case 6:
 			signOff();
 			break;
 			
@@ -133,17 +152,63 @@ public class ConsoleView {
 		} 
 		displayManagerMenu();
 	}
-	
-	private void borrowMenu(){
+
+	private boolean deleteReservation() {
+		boolean isDeleted = false;
+		displayReservation();
+		System.out.println("Entrez le numéro de la réservation que vous souhaitez supprimer");
+		int nbReservation = read.nextInt();
+		read.nextLine();
+		isDeleted = controller.deleteReservation(nbReservation);
+		
+		if(!isDeleted){
+			System.out.println("Suppression de la réservation non effectuée...");
+		}
+		else 
+			System.out.println("Suppression de la réservation effectué !");
+		
+		return isDeleted;
+	}
+
+	private boolean validateReservation() {
+		boolean isValidate = false;
+		displayReservation();
+		System.out.println("Entrez le numéro de la réservation que vous souhaitez valider");
+		int nbReservation = read.nextInt();
+		read.nextLine();
+		isValidate = controller.validateReservation(nbReservation);
+		
+		if(!isValidate){
+			System.out.println("Validation non effectuée...");
+		}
+		else 
+			System.out.println("Validation effectué !");
+		
+		return isValidate;
+		
+	}
+
+	private void displayReservation() {
+		List<Loan> reservations= controller.getReservations();
+		for(Loan loan : reservations){
+			System.out.println(loan.toString());
+		}
+	}
+
+	private void borrowMenu() throws Exception{
 		System.out.println("Entrez la reference du materiel que vous souhaitez emprunter");
+		int ref = read.nextInt();
+		read.nextLine();
 		displayStock();
-		String ref = read.nextLine();
 		System.out.println("Entrez la quantite que vous souhaitez");
-		String amount = read.nextLine();
-		System.out.println("Entrez la date de début d'emprunt sous la forme suivante DD/MM/YYYY");
-		String dateD = read.nextLine();
-		System.out.println("Entrez la date de fin d'emprunt sous la forme suivante DD/MM/YYYY");
-		String dateF = read.nextLine();
+		int amount = read.nextInt();
+		read.nextLine();
+		System.out.println("Entrez la date de début d'emprunt sous la forme suivante JJ/MM/AAAA");
+		String startDate = read.nextLine();
+		System.out.println("Entrez la date de fin d'emprunt sous la forme suivante JJ/MM/AAAA");
+		String endDate = read.nextLine();
+		
+		controller.addReservation(ref,amount,startDate,endDate);
 	}
 	
 	/*public MaterialType chooseMaterial() {
@@ -253,7 +318,7 @@ public class ConsoleView {
 		return userConnected;
 	}
 	
-	private void signOff() {
+	private void signOff() throws Exception {
 		controller.signOff();
 		begin();
 		

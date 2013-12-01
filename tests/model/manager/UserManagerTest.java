@@ -1,6 +1,5 @@
-package controller;
+package model.manager;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 import model.manager.UserManager;
 import model.user.Manager;
@@ -89,6 +88,15 @@ public class UserManagerTest extends TestCase {
 		this.userManager.checkUserPassword("delerce", "md");
 		assertNotNull(this.userManager.getConnectedUser());
 		assertEquals(this.userManager.getConnectedUser().getClass(), Student.class);
+	}
+	
+	@Test
+	public void testSignOff(){
+		this.userManager.addNewUser("Student", "Delerce", "Marina", "delercem", "mdm");
+		this.userManager.checkUserPassword("delercem", "mdm");
+		assertNotNull(this.userManager.getConnectedUser());
+		this.userManager.signOff();
+		assertNull(this.userManager.getConnectedUser());
 	}
 
 }

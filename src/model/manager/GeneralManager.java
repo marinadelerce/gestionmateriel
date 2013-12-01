@@ -1,10 +1,14 @@
 package model.manager;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 
+import model.loan.Loan;
 import model.material.MaterialType;
 import model.user.Borrower;
+import model.user.Manager;
 import model.user.User;
 
 public class GeneralManager {
@@ -64,4 +68,25 @@ public class GeneralManager {
 		materialManager.save();
 		userManager.save();
 	}
+
+	public List<Loan> getReservations() {
+		return materialManager.getReservations();
+	}
+
+	public boolean validateReservation(int nbReservation) {
+		Loan loan = materialManager.searchLoan(nbReservation);
+		return materialManager.validateLoan(loan);
+	}
+
+	public boolean deleteReservation(int nbReservation) {
+		Loan loan = materialManager.searchLoan(nbReservation);
+		return materialManager.deleteLoan(loan);
+	}
+
+	public boolean book(Manager connectedUser, MaterialType materialType,
+			GregorianCalendar newStartDate, GregorianCalendar newEndDate,
+			int amount) {
+		return materialManager.book(materialType, connectedUser, newEndDate, newStartDate, newEndDate);
+	}
+
 }

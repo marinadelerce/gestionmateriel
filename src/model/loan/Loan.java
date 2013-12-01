@@ -8,6 +8,7 @@ import model.user.Borrower;
 
 public class Loan {
 	
+	private int id = 0;
 	private GregorianCalendar startDate;
 	private GregorianCalendar endDate;
 	private Borrower borrower;
@@ -19,6 +20,7 @@ public class Loan {
 	public Loan(Borrower borrower, Material material, int quantity,
 			GregorianCalendar startDate, GregorianCalendar endDate,
 			boolean effective, boolean validate) {
+		this.id = id++;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.borrower = borrower;
@@ -26,6 +28,10 @@ public class Loan {
 		this.quantity = quantity;
 		this.effective = effective;
 		this.validate = validate;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public GregorianCalendar getStartDate() {

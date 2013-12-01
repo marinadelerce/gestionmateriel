@@ -1,8 +1,10 @@
 package model.manager;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import model.loan.Loans;
 import model.loan.Loan;
@@ -11,12 +13,15 @@ import model.material.Material;
 import model.material.MaterialType;
 import model.material.Stock;
 import model.user.Borrower;
+import model.user.Manager;
 
 public class MaterialManager {
 
 	private Stock stock;
 	private Loans loans;
 	private Reservations reservations;
+	private static int idLoan = 0;
+	private final static int conversion = 86400000;
 
 	public MaterialManager() {
 		stock = new Stock();
@@ -73,6 +78,9 @@ public class MaterialManager {
 		  // stock prevu a la date t 
 		  Stock predicted_stock;
 		  
+		  //génération de l'id du futur emprunt;
+		  idLoan ++;
+		  
 		  // on verifie que la quantite de materiel est disponible pendant toute la duree de l'emprunt 
 		  GregorianCalendar virtual_date =  (GregorianCalendar) startDate.clone();
 		  
@@ -106,4 +114,59 @@ public class MaterialManager {
 		loans.save();
 		reservations.save();
 	}
+
+
+	private int calculateDifference(GregorianCalendar startDate, GregorianCalendar endDate) {
+		int result = 0;
+
+		if (startDate.after(endDate))
+			result = -1;
+		else result = startDate.compareTo(endDate)/conversion;
+
+		return result;
+	}
+
+	public boolean validateLoan(Loan loan) {
+		
+		boolean isValidate = false;
+		// lors de la création de l'emprunt on verifie l'état du stock, il n'y a
+		// donc pas besoin de le verifier a nouveau
+		
+		int loanHours = calculateDifference(loan.getStartDate(),
+				loan.getEndDate());
+		if (loanHours <= loan.getMaterial().getMaterialType().getMaxTimeLoan()) {
+			if (loanHours <= loan.getBorrower().getLoanDuration()) {
+				loan.setValidate(true);
+				isValidate = true;
+			}
+		}
+
+		return isValidate;
+	}
+	
+	public List<Loan> getReservations() {
+		return reservations.getReservations();
+	}
+
+	public Loan searchLoan(int nbReservation) {
+		Loan loanToValidate = null;
+		for(Loan loan : getReservations()){
+			if(loan.getId() == nbReservation)
+				loanToValidate = loan;
+		}
+		return loanToValidate;
+	}
+
+	public boolean deleteLoan(Loan loan) {
+		reservations.remove(loan);
+		return true;
+	}
+
+	public boolean book(MaterialType materialType, Manager connectedUser,
+			GregorianCalendar newEndDate, GregorianCalendar newStartDate,
+			GregorianCalendar newEndDate2) {
+		// TODO méthode book pour le gestionnaire: emprunt créé déjà validé
+		return false;
+	}
+
 }

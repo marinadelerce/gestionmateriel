@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 
+
+import model.loan.Loan;
 import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Manager;
@@ -16,6 +18,7 @@ public class UserManager {
 	
 	private Users users;
 	private User connectedUser;
+	private Manager manager;
 	private GregorianCalendar currentDate;
 	private final static int conversion = 86400000;
 

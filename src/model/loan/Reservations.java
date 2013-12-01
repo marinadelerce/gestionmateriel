@@ -41,4 +41,9 @@ public class Reservations {
 	public void save(){
 		// save reservations in the save file
 	}
+
+	public List<Loan> getReservations() {
+		
+		return reservations;
+	}
 }
