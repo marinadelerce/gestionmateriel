@@ -2,12 +2,14 @@ package model.manager;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import junit.framework.TestCase;
 import model.loan.Loan;
-import model.loan.Reservations;
+import model.loan.Loans;
 import model.material.Material;
 import model.material.MaterialType;
 import model.material.OS;
@@ -79,7 +81,7 @@ public class MaterialManagerTest extends TestCase {
 	
 	@Test
 	public void testDeleteLoan(){
-		Reservations reservations = new Reservations();
+		Loans reservations = new Loans();
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
@@ -95,7 +97,7 @@ public class MaterialManagerTest extends TestCase {
 
 	@Test
 	public void testGetReservations() {
-		Reservations reservations = new Reservations();
+		Loans reservations = new Loans();
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
@@ -112,10 +114,12 @@ public class MaterialManagerTest extends TestCase {
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
-		Material material = new Material(materialtype, "zede");
-		Loan newLoan = new Loan(newManager, (Material) material, 3,
-				new GregorianCalendar(2013, Calendar.DECEMBER, 2),
-				new GregorianCalendar(2013, Calendar.DECEMBER, 3), false, false);
+		Material tel1 = new Material(materialtype, "gs21");
+		Material tel2 = new Material(materialtype, "gs22");
+		List<Material> materials = new ArrayList<Material>();
+		materials.add(tel1);
+		materials.add(tel2);
+		Loan newLoan = new Loan(newManager,materials,);
 		materialManager.getReservations().add(newLoan);
 		int id = newLoan.getId();
 		Loan searchedLoan = materialManager.searchLoan(id);

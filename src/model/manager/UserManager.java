@@ -55,23 +55,6 @@ public class UserManager {
 		return users.checkSameUser(login);
 	}
 
-	public boolean book(Borrower borrower, MaterialType material,
-			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) {
-		boolean book = true;
-		int duration;
-		// verifier les dates
-		if (startDate.after(endDate) || startDate.equals(endDate))
-			book = false;
-		// verifier les durees
-		else {
-			duration = startDate.compareTo(endDate) / conversion;
-			if (duration > borrower.getLoanDuration())
-				book = false;
-		}
-
-		return book;
-	}
-
 	public boolean checkUserPassword(String login, String password) {
 		if ((connectedUser = users.checkUserPassword(login, password))!=null) return true;
 		else return false;
@@ -92,5 +75,31 @@ public class UserManager {
 	
 	public void save(){
 		users.save();
+	}
+
+	public boolean canBook(User connectedUser, GregorianCalendar startDate,
+			GregorianCalendar endDate) {
+		if(connectedUser instanceof Manager){
+			return true;
+		}
+		
+		if(connectedUser instanceof Borrower){
+			Borrower borrower = (Borrower) connectedUser;
+			boolean book = true;
+			int duration;
+			// verifier les dates
+			if (startDate.after(endDate) || startDate.equals(endDate))
+				book = false;
+			// verifier les durees
+			else {
+				duration = startDate.compareTo(endDate) / conversion;
+				if (duration > borrower.getLoanDuration())
+					book = false;
+			}
+
+			return book;
+		}
+		
+		return false;
 	}
 }

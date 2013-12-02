@@ -1,33 +1,46 @@
 package model.loan;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import model.material.Material;
 import model.material.MaterialType;
 import model.user.Borrower;
+import model.user.Manager;
+import model.user.User;
 
 public class Loan {
 	
-	private int id = 0;
+	public static int LOAN_ID = 0;
+	private int id;
 	private GregorianCalendar startDate;
 	private GregorianCalendar endDate;
-	private Borrower borrower;
-	private Material material;
-	private int quantity;
+	private User user;
+	private List<Material> materials;
 	private boolean effective;
 	private boolean validate;
 
-	public Loan(Borrower borrower, Material material, int quantity,
+	private Loan(User user, List<Material> materials,
 			GregorianCalendar startDate, GregorianCalendar endDate,
 			boolean effective, boolean validate) {
-		this.id = id++;
+		this.id = LOAN_ID;
+		LOAN_ID = LOAN_ID + 1;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.borrower = borrower;
-		this.material = material;
-		this.quantity = quantity;
+		this.user = user;
+		this.materials = materials;
 		this.effective = effective;
 		this.validate = validate;
+	}
+	
+	public Loan(Borrower borrower, List<Material> materials,
+			GregorianCalendar startDate, GregorianCalendar endDate) {
+		this(borrower, materials, startDate, endDate, false, false);
+	}
+	
+	public Loan(Manager manager, List<Material> materials,
+			GregorianCalendar startDate, GregorianCalendar endDate) {
+		this(manager, materials, startDate, endDate, false, true);
 	}
 
 	public int getId() {
@@ -42,16 +55,12 @@ public class Loan {
 		return endDate;
 	}
 
-	public Borrower getBorrower() {
-		return borrower;
+	public User getUser() {
+		return user;
 	}
 
-	public Material getMaterial() {
-		return material;
-	}
-
-	public int getQuantity() {
-		return quantity;
+	public List<Material> getMaterials() {
+		return materials;
 	}
 
 	public boolean isEffective() {
@@ -70,16 +79,12 @@ public class Loan {
 		this.endDate = endDate;
 	}
 
-	public void setBorrower(Borrower borrower) {
-		this.borrower = borrower;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void setMaterials(List<Material> materials) {
+		this.materials = materials;
 	}
 
 	public void setEffective(boolean effective) {

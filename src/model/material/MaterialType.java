@@ -1,6 +1,6 @@
 package model.material;
 
-public abstract class MaterialType{
+public class MaterialType{
 
 	private String name;
 	private String brand;

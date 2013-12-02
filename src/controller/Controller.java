@@ -2,14 +2,17 @@ package controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import model.loan.Loan;
 import model.manager.GeneralManager;
+import model.material.Material;
 import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Manager;
@@ -36,6 +39,12 @@ public class Controller {
 	private void populate() {
 		model.addNewUser("Manager", "Sander", "Peter", "sander","ps");
 		model.addNewUser("Student", "Delerce", "Marina", "mutti", "md");
+		
+		MaterialType telephoneSamsungGalaxyS2 = new MaterialType("Galaxy S 2", "Samsung", "Super smartphone!", 72, 3);
+		Material galaxyS2Num1 = new Material(telephoneSamsungGalaxyS2, "gs21");
+		Material galaxyS2Num2 = new Material(telephoneSamsungGalaxyS2, "gs22");
+		model.addMaterial(galaxyS2Num1);
+		model.addMaterial(galaxyS2Num2);
 	}
 	
 	public User getConnectedUser(){
@@ -58,7 +67,7 @@ public class Controller {
 		return model.checkUserPassword(login, password);
 	}
 	
-	public HashMap<MaterialType, Integer> getStock(){
+	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return model.getStock();
 	}
 	
@@ -93,8 +102,13 @@ public class Controller {
 		return newDate;
 	}
 	
-	public boolean addReservation(int ref, int amount, String startDate, String endDate) throws Exception {
-		MaterialType materialType = null;
+	public boolean book(int ref, int amount, String startDate, String endDate) throws Exception {
+		GregorianCalendar newStartDate = convertDate(startDate);
+		GregorianCalendar newEndDate = convertDate(endDate);
+		return model.book(ref, newStartDate, newEndDate, amount);
+		
+		
+		/*MaterialType materialType = null;
 		for(Entry<MaterialType, Integer> entry : getStock().entrySet()) {
 			
 		    MaterialType material = entry.getKey();
@@ -103,8 +117,7 @@ public class Controller {
 		    	materialType = material;
 		    }
 		}
-		GregorianCalendar newStartDate = convertDate(startDate);
-		GregorianCalendar newEndDate = convertDate(endDate);
+		
 		
 		if(materialType != null){
 			if(getConnectedUser() instanceof Manager)
@@ -114,6 +127,12 @@ public class Controller {
 		}
 		else 
 			return false;
+			*/
+	}
+	
+	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
+			String startDate, String endDate) throws ParseException {
+		return model.getAvailableStock(convertDate(startDate), convertDate(endDate));
 	}
 
 }

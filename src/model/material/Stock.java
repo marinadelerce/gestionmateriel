@@ -1,47 +1,50 @@
 package model.material;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class Stock {
 	
-	private Map<MaterialType, Integer> stock;
-	private int currentSerialNumber;
+	private Map<MaterialType, ArrayList<Material>> stock;
 	private final String SAVE_FILE = "";
 	
 	public Stock(){
-		stock = new HashMap<MaterialType, Integer>();
-		currentSerialNumber=0;
+		stock = new HashMap<MaterialType, ArrayList<Material>>();
 	}
 	
-	public Stock(Map<MaterialType, Integer> stock2){
+	public Stock(Map<MaterialType, ArrayList<Material>> stock2){
 		this.stock = stock2;
 	}
 	
-	public void add(MaterialType material){
-		if (!stock.containsKey(material)){
-			stock.put(material, new Integer(1));
+	public void add(Material material){
+		if (!stock.containsKey(material.getMaterialType())){
+			ArrayList<Material> materials = new ArrayList<Material>();
+			materials.add(material);
+			stock.put(material.getMaterialType(),materials);
 		}
 		else {
-			Integer previous = stock.get(material);
-			stock.put(material, previous+1);
+			stock.get(material.getMaterialType()).add(material);
 		}
 	}
 	
-	public void remove(MaterialType material) throws Exception{
+	public void remove(Material material) throws Exception{
 		
-		if(!stock.containsKey(material)){
+		
+		if(!stock.containsKey(material.getMaterialType())){
 			throw new Exception("L'objet demandé est absent du stock");
-		} else if (stock.get(material).equals(new Integer(0))){
-			throw new Exception("Il ne reste plus de ce matériel en stock");
 		} else {
-			Integer previous = stock.get(material);
-			stock.put(material, previous+1);
+			ArrayList<Material> materials = stock.get(material.getMaterialType());
+			if(!materials.contains(material))
+				throw new Exception("L'objet demandé est absent du stock");
+			else
+				materials.remove(material);
 		}
 	}
 	
-	public void remove(int reference) throws Exception{
+	/*public void remove(int reference) throws Exception{
 		
 		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
 			
@@ -54,28 +57,26 @@ public class Stock {
 		}
 		
 		throw new Exception("Référence inexistante dans en stock");
+	}*/
+	
+	public ArrayList<Material> getStock(MaterialType materialType){
+		if (!stock.containsKey(materialType)) return null;
+		else return stock.get(materialType);
 	}
 	
-	public Integer getStock(MaterialType material){
-		if (!stock.containsKey(material)) return new Integer(0);
-		else return stock.get(material);
-	}
-	
-	public Integer getStock(int reference){
+	public ArrayList<Material> getStock(int reference){
 		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
-			
-		    MaterialType material = entry.getKey();
+		for(MaterialType materialType : stock.keySet()) {
 		    
-		    if (material.getReference() == reference){
-		    	return getStock(material);
+		    if (materialType.getReference() == reference){
+		    	return getStock(materialType);
 		    }
 		}
 		
-		return new Integer(0);
+		return null;
 	}
 	
-	public Material getObject(int reference) throws Exception{
+	/*public Material getObject(int reference) throws Exception{
 		
 		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
 			
@@ -90,15 +91,15 @@ public class Stock {
 		
 		throw new Exception("Référence inexistante dans le stock");
 		
+	}*/
+	
+	public Map<MaterialType, ArrayList<Material>> getStock(){
+		return stock;
 	}
 	
-	public HashMap<MaterialType, Integer> getStock(){
-		return (HashMap<MaterialType, Integer>) stock;
-	}
-	
-	public int getNewSerialNumber(){
+	/*public int getNewSerialNumber(){
 		return currentSerialNumber++;
-	}
+	}*/
 	
 	public void save(){
 		// save stock in the file
@@ -107,5 +108,14 @@ public class Stock {
 	@Override
 	public Object clone(){
 		return new Stock(this.stock);
+	}
+
+	public MaterialType getMaterialType(int ref) {
+		for(MaterialType materialType : stock.keySet()) {
+		    if (materialType.getReference() == ref){
+		    	return materialType;
+		    }
+		}
+		return null;
 	}
 }

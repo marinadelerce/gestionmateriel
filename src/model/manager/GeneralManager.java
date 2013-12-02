@@ -1,11 +1,14 @@
 package model.manager;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.loan.Loan;
+import model.material.Material;
 import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Manager;
@@ -25,15 +28,14 @@ public class GeneralManager {
 	public boolean addNewUser(String userType, String lastname, String firstname, String login, String password){
 		return userManager.addNewUser(userType, lastname, firstname, login, password);
 	}
-
-	public boolean book(Borrower borrower, MaterialType material,
-			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) throws Exception {
-		if (userManager.book(borrower, material, startDate, endDate, quantity)) {
-			materialManager.book(material, borrower, quantity, startDate,
-					endDate);
-			return true;
-		} else
-			return false;
+	
+	public boolean book(int ref, GregorianCalendar startDate,
+			GregorianCalendar endDate, int quantity) {
+		if (userManager.canBook(userManager.getConnectedUser(), startDate, endDate)
+				&& materialManager.maxTimeLoanNotReach(ref, startDate, endDate)) {
+			return materialManager.book(ref, userManager.getConnectedUser(), startDate, endDate, quantity);
+		}
+		return false;
 	}
 
 	public boolean checkUserPassword(String login, String password) {
@@ -60,7 +62,7 @@ public class GeneralManager {
 		return userManager.deleteUser(lastname, firstname, login);
 	}
 	
-	public HashMap<MaterialType, Integer> getStock(){
+	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return materialManager.getStock();
 	}
 	
@@ -74,8 +76,7 @@ public class GeneralManager {
 	}
 
 	public boolean validateReservation(int nbReservation) {
-		Loan loan = materialManager.searchLoan(nbReservation);
-		return materialManager.validateLoan(loan);
+		return materialManager.validateLoan(nbReservation);
 	}
 
 	public boolean deleteReservation(int nbReservation) {
@@ -83,10 +84,16 @@ public class GeneralManager {
 		return materialManager.deleteLoan(loan);
 	}
 
-	public boolean book(Manager connectedUser, MaterialType materialType,
-			GregorianCalendar newStartDate, GregorianCalendar newEndDate,
-			int amount) {
-		return materialManager.book(materialType, connectedUser, newEndDate, newStartDate, newEndDate);
+	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
+			GregorianCalendar startDate, GregorianCalendar endDate) {
+		return materialManager.getAvailableStock(startDate, endDate);
 	}
+
+	public void addMaterial(Material material) {
+		materialManager.addMaterial(material);
+		
+	}
+
+	
 
 }

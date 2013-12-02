@@ -16,7 +16,7 @@ public class Loans {
 	
 	public void add(Loan loan){
 		
-		loan.setEffective(true);
+		loan.setEffective(false);
 		loans.add(loan);
 	}
 	
@@ -24,16 +24,17 @@ public class Loans {
 		loans.remove(loan);
 	}
 	
-	public List<Loan> getActiveLoans(GregorianCalendar date){
+	public List<Loan> getActiveReservations(GregorianCalendar date){
 		
-		List<Loan> active_loans = new LinkedList<Loan>();
+		List<Loan> active_reservations = new LinkedList<Loan>();
 		
 		for(Loan loan : loans) {
 			
-			if (loan.getEndDate().after(date) || loan.getEndDate().equals(date)) active_loans.add(loan);
+			if (((loan.getStartDate().before(date)||(loan.getStartDate().equals(date))) && (loan.getEndDate().after(date) || loan.getEndDate().equals(date)))) 
+					active_reservations.add(loan);
 		}
 		
-		return active_loans;
+		return active_reservations;
 		
 	}
 	
@@ -50,6 +51,11 @@ public class Loans {
 	}
 	
 	public void save(){
-		// save loans in the save file
+		// save reservations in the save file
+	}
+
+	public List<Loan> getLoans() {
+		
+		return loans;
 	}
 }
