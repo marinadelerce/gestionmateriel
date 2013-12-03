@@ -119,7 +119,7 @@ public class MaterialManagerTest extends TestCase {
 		List<Material> materials = new ArrayList<Material>();
 		materials.add(tel1);
 		materials.add(tel2);
-		Loan newLoan = new Loan(newManager,materials,);
+		//Loan newLoan = new Loan(newManager,materials,);
 		materialManager.getReservations().add(newLoan);
 		int id = newLoan.getId();
 		Loan searchedLoan = materialManager.searchLoan(id);

@@ -166,10 +166,11 @@ public class MaterialManager {
 		return false;
 	}
 
-	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
-			GregorianCalendar startDate, GregorianCalendar endDate) {
+	public Map<MaterialType, ArrayList<Material>> getBorrowedMaterial()
+	{
 		Map<MaterialType, ArrayList<Material>> loansByMaterialType = new HashMap<MaterialType, ArrayList<Material>>();
 		
+		//recuperation du materiel emprunté
 		for(Loan loan: loans.getLoans()) {
 			if(!loansByMaterialType.containsKey(loan.getMaterials().get(0).getMaterialType())) {
 				loansByMaterialType.put(loan.getMaterials().get(0).getMaterialType(), new ArrayList<Material>(loan.getMaterials()));
@@ -180,10 +181,22 @@ public class MaterialManager {
 			}
 		}
 		
+		return loansByMaterialType;
+	}
+	
+	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
+			GregorianCalendar startDate, GregorianCalendar endDate) {
+		
+		Map<MaterialType, ArrayList<Material>> loansByMaterialType = new HashMap<MaterialType, ArrayList<Material>>();
+		
+		loansByMaterialType = getBorrowedMaterial();
 		Map<MaterialType, ArrayList<Material>> availableStock = new HashMap<MaterialType, ArrayList<Material>>();
 		
 		for(MaterialType materialType: stock.getStock().keySet()){
-			if(stock.getStock(materialType) != null && loansByMaterialType.get(materialType) != null){
+			if(loansByMaterialType.get(materialType) == null) {
+				ArrayList<Material> availableMaterials = stock.getStock(materialType);
+				availableStock.put(materialType, availableMaterials);
+			} else {
 				if(stock.getStock(materialType).size() > loansByMaterialType.get(materialType).size()) {
 					ArrayList<Material> availableMaterials = new ArrayList<Material>();
 					for(Material material: stock.getStock(materialType)) {

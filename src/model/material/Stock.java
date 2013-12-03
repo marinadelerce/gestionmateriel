@@ -8,14 +8,14 @@ import java.util.Map.Entry;
 
 public class Stock {
 	
-	private Map<MaterialType, ArrayList<Material>> stock;
+	private HashMap<MaterialType, ArrayList<Material>> stock;
 	private final String SAVE_FILE = "";
 	
 	public Stock(){
 		stock = new HashMap<MaterialType, ArrayList<Material>>();
 	}
 	
-	public Stock(Map<MaterialType, ArrayList<Material>> stock2){
+	public Stock(HashMap<MaterialType, ArrayList<Material>> stock2){
 		this.stock = stock2;
 	}
 	
@@ -27,6 +27,7 @@ public class Stock {
 		}
 		else {
 			stock.get(material.getMaterialType()).add(material);
+			
 		}
 	}
 	
