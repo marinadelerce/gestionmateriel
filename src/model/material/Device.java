@@ -1,5 +1,7 @@
 package model.material;
 
+import java.util.HashMap;
+
 public abstract class Device extends MaterialType {
 
 	private OS typeOs;
@@ -10,6 +12,8 @@ public abstract class Device extends MaterialType {
 		typeOs = type;
 	}
 
+	public Device() {super();}
+
 	public OS getTypeOS() {
 		return typeOs;
 	}
@@ -19,4 +23,15 @@ public abstract class Device extends MaterialType {
 				+ this.getReference() + "OS: " + this.getTypeOS();
 	}
 	
+	@Override
+	public HashMap<String, Object> getSerializableDescription(){
+		return null;
+	}
+	
+	@Override
+	public void setObject(HashMap<String, Object> description){
+		typeOs = (OS)description.get("typeOS");
+		description.remove("typeOS");
+		super.setObject(description);
+	}
 }

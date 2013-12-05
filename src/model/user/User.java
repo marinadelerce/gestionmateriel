@@ -1,5 +1,7 @@
 package model.user;
 
+import java.util.HashMap;
+
 public abstract class User {
 	
 	protected String lastname;
@@ -15,6 +17,8 @@ public abstract class User {
 		this.password = password;
 	}
 	
+	public User() {}
+
 	public String getName(){
 		return lastname;
 	}
@@ -34,10 +38,17 @@ public abstract class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public void setObject(HashMap<String, Object> description){
+	}
 
 	@Override
 	public String toString(){
 		return lastname + " " + firstname;
+	}
+	
+	public HashMap<String, Object> getSerializableDescription(){
+		return null;
 	}
 	
 }

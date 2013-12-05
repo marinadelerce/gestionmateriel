@@ -1,6 +1,10 @@
 package model.loan;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.material.Material;
@@ -43,6 +47,38 @@ public class Loan {
 		this(manager, materials, startDate, endDate, false, true);
 	}
 
+	public Loan(HashMap<String, Object> loanDescription){
+		
+		this.id = (int) loanDescription.get("id");
+		this.effective = (boolean) loanDescription.get("effective");
+		this.validate = (boolean) loanDescription.get("validate");
+		
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try{
+			Date start = format.parse((String) loanDescription.get("startDate"));
+			startDate = new GregorianCalendar();
+			startDate.setTime(start);
+			
+			Date end = format.parse((String) loanDescription.get("startDate"));
+			endDate = new GregorianCalendar();
+			endDate.setTime(end);
+		} catch (Exception e){}
+		
+		HashMap<String, Object> userDescription = (HashMap<String, Object>) loanDescription.get("user");
+		user = (User) createObject((String) userDescription.get("className"));
+		user.setObject(userDescription);
+
+		
+		// description de la liste de materiels
+		List<HashMap<String, Object>> materialDescriptions = (List<HashMap<String, Object>>) loanDescription.get("materials");
+		materials = new LinkedList<Material>();
+		for (HashMap<String, Object> material : materialDescriptions){
+			materials.add(new Material(material));
+		}
+
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -95,4 +131,41 @@ public class Loan {
 		this.validate = validate;
 	}
 
+	public HashMap<String, Object> getSerializableDescription(){
+		
+		HashMap<String, Object> loanDescription = new HashMap<String, Object>();
+		
+		loanDescription.put("id", id);
+		loanDescription.put("startDate", startDate.DAY_OF_MONTH + "/" + startDate.MONTH + "/" + startDate.YEAR);
+		loanDescription.put("endDate", endDate.DAY_OF_MONTH + "/" + endDate.MONTH + "/" + endDate.YEAR);
+		loanDescription.put("user", user.getSerializableDescription());
+		loanDescription.put("effective", effective);
+		loanDescription.put("validate", validate);
+		
+		// description de la liste de materiels
+		List<HashMap<String, Object>> materialDescriptions = new LinkedList<HashMap<String, Object>>();
+		for (Material material : materials){
+			materialDescriptions.add(material.getSerializableDescription());
+		}
+		
+		loanDescription.put("materials", materialDescriptions);
+		return loanDescription;
+		
+	}
+	
+	static Object createObject(String className) {
+		 
+		Object object = null;
+		try {
+		    Class<?> classDefinition = Class.forName(className);
+		    object = classDefinition.newInstance();
+	    } catch (InstantiationException e) {
+		          System.out.println(e);
+		} catch (IllegalAccessException e) {
+		          System.out.println(e);
+		} catch (ClassNotFoundException e) {
+		          System.out.println(e);
+		}
+		return object;
+	}
 }

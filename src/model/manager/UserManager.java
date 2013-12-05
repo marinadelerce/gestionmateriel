@@ -76,6 +76,10 @@ public class UserManager {
 	public void save(){
 		users.save();
 	}
+	
+	public void load(){
+		users.load();
+	}
 
 	public boolean canBook(User connectedUser, GregorianCalendar startDate,
 			GregorianCalendar endDate) {

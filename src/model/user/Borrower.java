@@ -1,5 +1,7 @@
 package model.user;
 
+import java.util.HashMap;
+
 public abstract class Borrower extends User{
 
 	private static int loanDuration;
@@ -9,6 +11,8 @@ public abstract class Borrower extends User{
 		setLoanDuration(loanDuration);
 	}
 
+	public Borrower(){super();}
+	
 	public int getLoanDuration() {
 		return loanDuration;
 	}
@@ -22,4 +26,12 @@ public abstract class Borrower extends User{
 		return "User: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
 	
+	@Override
+	public HashMap<String, Object> getSerializableDescription(){
+		return null;
+	}
+	
+	@Override
+	public void setObject(HashMap<String, Object> description){
+	}
 }

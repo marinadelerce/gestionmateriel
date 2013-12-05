@@ -34,8 +34,11 @@ public class GeneralManager {
 		if (userManager.canBook(userManager.getConnectedUser(), startDate, endDate)
 				&& materialManager.maxTimeLoanNotReach(ref, startDate, endDate)) {
 			return materialManager.book(ref, userManager.getConnectedUser(), startDate, endDate, quantity);
+		}{
+			System.out.println("Emrpunt refuse general manager");
+			return false;
 		}
-		return false;
+
 	}
 
 	public boolean checkUserPassword(String login, String password) {
@@ -71,6 +74,11 @@ public class GeneralManager {
 		userManager.save();
 	}
 
+	public void load(){
+		materialManager.load();
+		userManager.load();
+	}
+	
 	public List<Loan> getReservations() {
 		return materialManager.getReservations();
 	}

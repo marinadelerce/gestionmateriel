@@ -14,6 +14,8 @@ import model.loan.Loan;
 import model.manager.GeneralManager;
 import model.material.Material;
 import model.material.MaterialType;
+import model.material.OS;
+import model.material.SmartPhone;
 import model.user.Borrower;
 import model.user.Manager;
 import model.user.User;
@@ -37,14 +39,15 @@ public class Controller {
 	
 	// DEBUG
 	private void populate() {
-		model.addNewUser("Manager", "Sander", "Peter", "sander","ps");
+		/*model.addNewUser("Manager", "Sander", "Peter", "sander","ps");
 		model.addNewUser("Student", "Delerce", "Marina", "mutti", "md");
 		
-		MaterialType telephoneSamsungGalaxyS2 = new MaterialType("Galaxy S 2", "Samsung", "Super smartphone!", 72, 3);
+		MaterialType telephoneSamsungGalaxyS2 = new SmartPhone("Galaxy S 2", "Samsung", "Super smartphone!", 72, OS.ANDROID, 3);
 		Material galaxyS2Num1 = new Material(telephoneSamsungGalaxyS2, "gs21");
 		Material galaxyS2Num2 = new Material(telephoneSamsungGalaxyS2, "gs22");
 		model.addMaterial(galaxyS2Num1);
-		model.addMaterial(galaxyS2Num2);
+		model.addMaterial(galaxyS2Num2);*/
+		model.load();
 	}
 	
 	public User getConnectedUser(){
@@ -103,6 +106,7 @@ public class Controller {
 	}
 	
 	public boolean book(int ref, int amount, String startDate, String endDate) throws Exception {
+		
 		GregorianCalendar newStartDate = convertDate(startDate);
 		GregorianCalendar newEndDate = convertDate(endDate);
 		return model.book(ref, newStartDate, newEndDate, amount);

@@ -213,8 +213,16 @@ public class ConsoleView {
 		System.out.println("Entrez la quantite que vous souhaitez");
 		int amount = read.nextInt();
 		read.nextLine();
+		
+		boolean achieve = false;
 
-		controller.book(ref, amount, startDate, endDate);
+		try {achieve = controller.book(ref, amount, startDate, endDate);}
+		catch(Exception e){System.out.println("Erreur à l'enregistrement");}
+		
+		if (achieve) System.out.println("Emprunt enregistré");
+		else System.out.println("Erreur à l'enregistrement");
+		
+		displayMenu();
 	}
 
 	/*

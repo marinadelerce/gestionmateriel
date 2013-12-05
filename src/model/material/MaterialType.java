@@ -1,5 +1,7 @@
 package model.material;
 
+import java.util.HashMap;
+
 public class MaterialType{
 
 	private String name;
@@ -17,6 +19,17 @@ public class MaterialType{
 		this.maxTimeLoan = maxTimeLoan;
 	}
 
+	public MaterialType() {
+	}
+
+	public void setObject(HashMap<String, Object> description){
+		this.name = (String)description.get("name");
+		this.brand = (String)description.get("brand");
+		this.description = (String)description.get("description");
+		this.reference = (int)description.get("reference");
+		this.maxTimeLoan = (int)description.get("maxTimeLoan");
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -43,6 +56,10 @@ public class MaterialType{
 	
 	@Override
 	public Object clone(){
+		return null;
+	}
+	
+	public HashMap<String, Object> getSerializableDescription(){
 		return null;
 	}
 }

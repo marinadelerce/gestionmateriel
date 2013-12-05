@@ -114,7 +114,12 @@ public class MaterialManager {
 	
 	public void save(){
 		loans.save();
-		//reservations.save();
+		stock.save();
+	}
+	
+	public void load(){
+		loans.load();
+		stock.load();
 	}
 
 
@@ -240,8 +245,10 @@ public class MaterialManager {
 			if(connectedUser instanceof Borrower)
 				book = new Loan((Borrower)connectedUser, materials, startDate, endDate);
 			loans.add(book);
+			return true;
 		}
 		
+		System.out.println("Emrpunt refuse material manager");
 		return false;
 	}
 
