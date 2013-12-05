@@ -114,12 +114,27 @@ public class MaterialManagerTest extends TestCase {
 
 	@Test
 	public void testBook() {
-		fail("Not yet implemented");
+		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
+		Loan booked = null;
+		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
+				32, OS.ANDROID, 3);
+		Material tel1 = new Material(materialtype, "gs21");
+		materialManager.addMaterial(tel1);
+		try {
+			booked = materialManager.book(32, newManager,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"), 1);
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
+		assertNotNull(booked);
+		materialManager.getReservations().add(booked);
+		assertNotNull(materialManager.getReservations());
 	}
 
 	@Test
 	public void testGetStock() {
-		fail("Not yet implemented");
+		assertNotNull(materialManager.getStock());
 	}
 
 	@Test
@@ -185,14 +200,21 @@ public class MaterialManagerTest extends TestCase {
 		List<Material> materials = new ArrayList<Material>();
 		materials.add(tel1);
 		materials.add(tel2);
-		Loan newLoan = new Loan(newManager, materials,
-				DateUtils.convertDate("04/12/2013"),
-				DateUtils.convertDate("05/12/2013"));
+		Loan newLoan = null;
+		materialManager.addMaterial(tel1);
+		try {
+			newLoan = materialManager.book(32, newManager,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"), 1);
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
+		assertNotNull(newLoan);
 		materialManager.getReservations().add(newLoan);
 		int id = newLoan.getId();
 		Loan searchedLoan = materialManager.searchLoan(id);
 		assertNotNull(searchedLoan);
-		assertEquals(searchedLoan, newLoan); //FIXME
+		assertEquals(searchedLoan, newLoan); 
 	}
 
 }
