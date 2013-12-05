@@ -1,35 +1,49 @@
+/*
+ * 
+ */
 package view;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Map.Entry;
-import java.util.TimeZone;
-
 import model.loan.Loan;
-import model.manager.GeneralManager;
 import model.material.Material;
 import model.material.MaterialType;
-import model.material.Stock;
 import model.user.Borrower;
 import model.user.Manager;
 import model.user.User;
 import controller.Controller;
 
+/**
+ * The Class ConsoleView.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class ConsoleView {
 
+	/** The controller. */
 	private Controller controller;
+	
+	/** The read scanner */
 	private Scanner read;
 
+	/**
+	 * Instantiates a new console view.
+	 *
+	 * @param control the controller
+	 */
 	public ConsoleView(Controller control) {
 		controller = control;
 		read = new Scanner(System.in);
 	}
 
+	/**
+	 * Begin.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void begin() throws Exception {
 		int result;
 
@@ -55,13 +69,17 @@ public class ConsoleView {
 		}
 	}
 
+	/**
+	 * Display menu.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void displayMenu() throws Exception {
 		System.out.println("Menu");
 		User connectedUser = controller.getConnectedUser();
 		if (connectedUser == null) {
 			begin();
 		} else {
-			// TODO ON VA ESSAYER D'EVITER LES INSTANCEOF
 			if (connectedUser instanceof Manager) {
 				displayManagerMenu();
 			}
@@ -84,16 +102,31 @@ public class ConsoleView {
 	 * displayMaterialType(materialtype); System.out.println(" -> " + nb); } }
 	 */
 
+	/**
+	 * Display material type.
+	 *
+	 * @param materialT the material t
+	 */
 	public void displayMaterialType(MaterialType materialT) {
 		System.out.print(materialT.toString());
 	}
 
+	/**
+	 * Display users.
+	 *
+	 * @param users the users
+	 */
 	public void displayUsers(ArrayList<User> users) {
 		for (User user : users) {
 			System.out.println(user.toString());
 		}
 	}
 
+	/**
+	 * Display borrower menu.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void displayBorrowerMenu() throws Exception {
 		int choice;
 		System.out.println("1: Se déconnecter");
@@ -113,6 +146,11 @@ public class ConsoleView {
 		}
 	}
 
+	/**
+	 * Display manager menu.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void displayManagerMenu() throws Exception {
 		int choice;
 		System.out.println("1: Ajouter un utilisateur");
@@ -154,6 +192,11 @@ public class ConsoleView {
 		displayManagerMenu();
 	}
 
+	/**
+	 * Delete reservation.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean deleteReservation() {
 		boolean isDeleted = false;
 		displayReservation();
@@ -172,6 +215,11 @@ public class ConsoleView {
 		return isDeleted;
 	}
 
+	/**
+	 * Validate reservation.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean validateReservation() {
 		boolean isValidate = false;
 		displayReservation();
@@ -190,6 +238,9 @@ public class ConsoleView {
 
 	}
 
+	/**
+	 * Display reservation.
+	 */
 	private void displayReservation() {
 		List<Loan> reservations = controller.getReservations();
 		for (Loan loan : reservations) {
@@ -197,6 +248,11 @@ public class ConsoleView {
 		}
 	}
 
+	/**
+	 * Borrow menu.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void borrowMenu() throws Exception {
 		System.out
 				.println("Entrez la date de début d'emprunt sous la forme suivante JJ/MM/AAAA");
@@ -213,28 +269,25 @@ public class ConsoleView {
 		System.out.println("Entrez la quantite que vous souhaitez");
 		int amount = read.nextInt();
 		read.nextLine();
+		
+		boolean achieve = false;
 
-		controller.book(ref, amount, startDate, endDate);
+		try {achieve = controller.book(ref, amount, startDate, endDate);}
+		catch(Exception e){System.out.println("Erreur à l'enregistrement");}
+		
+		if (achieve) System.out.println("Emprunt enregistré");
+		else System.out.println("Erreur à l'enregistrement");
+		
+		displayMenu();
 	}
 
-	/*
-	 * public MaterialType chooseMaterial() { String name; Stock stock = new
-	 * Stock(); List<MaterialType> materials; MaterialType chosenMaterial =
-	 * null; int nb;
-	 * 
-	 * System.out .println(
-	 * "Veuillez choisir le type de materiel que vous souhaiter emprunter: ");
-	 * name = read.nextLine();
-	 * 
-	 * for (MaterialType material : materials) { if
-	 * (material.getName().equals(name)) { chosenMaterial = material; } } nb =
-	 * stock.getStock(chosenMaterial);
-	 * 
-	 * System.out.println("Stock de " + chosenMaterial.toString());
-	 * 
-	 * return chosenMaterial; }
+	/**
+	 * Display stock.
+	 *
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @throws ParseException the parse exception
 	 */
-
 	private void displayStock(String startDate, String endDate) throws ParseException {
 		Map<MaterialType, ArrayList<Material>> availableStock = controller
 				.getAvailableStock(startDate, endDate);
@@ -246,6 +299,11 @@ public class ConsoleView {
 		}
 	}
 
+	/**
+	 * Adds the new user.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean addNewUser() {
 
 		String type;
@@ -290,6 +348,11 @@ public class ConsoleView {
 
 	}
 
+	/**
+	 * Delete user.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean deleteUser() {
 
 		boolean isDeleted = false;
@@ -310,6 +373,11 @@ public class ConsoleView {
 		return isDeleted;
 	}
 
+	/**
+	 * Connect.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean connect() {
 
 		String login;
@@ -330,17 +398,28 @@ public class ConsoleView {
 		return userConnected;
 	}
 
+	/**
+	 * Sign off.
+	 *
+	 * @throws Exception the exception
+	 */
 	private void signOff() throws Exception {
 		controller.signOff();
 		begin();
 
 	}
 
+	/**
+	 * Display exit.
+	 */
 	public void displayExit() {
 		System.out.println("MaterialManagement simulation will finish");
 		this.read.close();
 	}
 
+	/**
+	 * Display start.
+	 */
 	public void displayStart() {
 		System.out.println("MaterialManagement simulation will start");
 	}

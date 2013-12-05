@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package model.manager;
 
 import static org.junit.Assert.*;
@@ -26,6 +29,9 @@ import org.junit.Test;
 import utils.DateUtils;
 import controller.Controller;
 
+/**
+ * The Class MaterialManagerTest.
+ */
 public class MaterialManagerTest extends TestCase {
 
 	private MaterialManager materialManager;
@@ -186,7 +192,7 @@ public class MaterialManagerTest extends TestCase {
 		int id = newLoan.getId();
 		Loan searchedLoan = materialManager.searchLoan(id);
 		assertNotNull(searchedLoan);
-		assertEquals(searchedLoan, newLoan); // FIXME
+		assertEquals(searchedLoan, newLoan); //FIXME
 	}
 
 }
