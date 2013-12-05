@@ -1,25 +1,48 @@
+/*
+ * 
+ */
 package model.material;
 
 import java.util.HashMap;
 
+/**
+ * The Class Tablet.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class Tablet extends Device {
 
+	/**
+	 * Instantiates a new tablet.
+	 *
+	 * @param name the name
+	 * @param brand the brand
+	 * @param description the description
+	 * @param reference the reference
+	 * @param type the type
+	 * @param maxTimeLoan the max time loan
+	 */
 	public Tablet(String name, String brand, String description, int reference,
 			OS type, int maxTimeLoan) {
 		super(name, brand, description, reference, type, maxTimeLoan);
 	}
 	
-	public Tablet(HashMap<String, Object> description){
-		super((String)description.get("name"), (String)description.get("brand"), (String)description.get("description"), (int)description.get("reference"), (OS)description.get("typeOS"), (int)description.get("maxTimeLoan"));
-	}
-	
+	/**
+	 * Instantiates a new tablet.
+	 */
 	public Tablet(){super();}
 	
+	/* (non-Javadoc)
+	 * @see model.material.MaterialType#clone()
+	 */
 	@Override
 	public Object clone(){
 		return new Tablet(this.getName(), this.getBrand(), this.getDescription(), this.getReference(), this.getTypeOS(), this.getMaxTimeLoan());
 	}
 	
+	/* (non-Javadoc)
+	 * @see model.material.Device#getSerializableDescription()
+	 */
 	@Override
 	public HashMap<String, Object> getSerializableDescription(){
 
@@ -35,6 +58,9 @@ public class Tablet extends Device {
 		return tabletDescription;
 	}
 	
+	/* (non-Javadoc)
+	 * @see model.material.Device#setObject(java.util.HashMap)
+	 */
 	@Override
 	public void setObject(HashMap<String, Object> description){
 		super.setObject(description);

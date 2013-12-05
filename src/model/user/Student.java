@@ -1,21 +1,40 @@
+/*
+ * 
+ */
 package model.user;
 
 import java.util.HashMap;
 
+/**
+ * The Class Student.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class Student extends Borrower{
 
+	/** The Constant loanDuration. */
 	private final static int loanDuration = 5;
 	
+	/**
+	 * Instantiates a new student.
+	 *
+	 * @param name the name
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @param password the password
+	 */
 	public Student(String name, String firstname, String login, String password){
 		super(name, firstname, login,password, loanDuration);
 	}
 	
-	public Student(HashMap<String, Object> description){
-		super((String)description.get("name"), (String)description.get("firstname"), (String)description.get("login"), (String)description.get("password"), loanDuration);
-	}
-	
+	/**
+	 * Instantiates a new student.
+	 */
 	public Student(){super();}
 	
+	/* (non-Javadoc)
+	 * @see model.user.Borrower#getSerializableDescription()
+	 */
 	@Override
 	public HashMap<String, Object> getSerializableDescription(){
 		
@@ -29,6 +48,9 @@ public class Student extends Borrower{
 		return userDescription;
 	}
 	
+	/* (non-Javadoc)
+	 * @see model.user.Borrower#setObject(java.util.HashMap)
+	 */
 	@Override
 	public void setObject(HashMap<String, Object> description){
 		this.lastname = (String) description.get("name");

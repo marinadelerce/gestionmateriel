@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package controller;
 
 import java.text.ParseException;
@@ -5,97 +8,161 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import model.loan.Loan;
 import model.manager.GeneralManager;
 import model.material.Material;
 import model.material.MaterialType;
-import model.material.OS;
-import model.material.SmartPhone;
-import model.user.Borrower;
-import model.user.Manager;
 import model.user.User;
 import view.ConsoleView;
 
+/**
+ * The Class Controller.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class Controller {
 
+	/** The view. */
 	private ConsoleView view;
+	
+	/** The model. */
 	private GeneralManager model;
 	
+	/**
+	 * Instantiates a new controller.
+	 */
 	public Controller(){
 		model = new GeneralManager();
 		view = new ConsoleView(this);
-		populate();
+		model.load();
 	}
 	
+	/**
+	 * Start.
+	 *
+	 * @throws Exception the exception
+	 */
 	public void start() throws Exception{
 		view.displayStart();
 		view.begin();
 	}
 	
-	// DEBUG
-	private void populate() {
-		/*model.addNewUser("Manager", "Sander", "Peter", "sander","ps");
-		model.addNewUser("Student", "Delerce", "Marina", "mutti", "md");
-		
-		MaterialType telephoneSamsungGalaxyS2 = new SmartPhone("Galaxy S 2", "Samsung", "Super smartphone!", 72, OS.ANDROID, 3);
-		Material galaxyS2Num1 = new Material(telephoneSamsungGalaxyS2, "gs21");
-		Material galaxyS2Num2 = new Material(telephoneSamsungGalaxyS2, "gs22");
-		model.addMaterial(galaxyS2Num1);
-		model.addMaterial(galaxyS2Num2);*/
-		model.load();
-	}
-	
+	/**
+	 * Gets the connected user.
+	 *
+	 * @return the connected user
+	 */
 	public User getConnectedUser(){
 		return model.getConnectedUser();
 	}
 	
+	/**
+	 * Delete user.
+	 *
+	 * @param lastname the lastname
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @return true, if successful
+	 */
 	public boolean deleteUser(String lastname, String firstname, String login) {
 		return model.deleteUser(lastname, firstname, login);
 	}
 	
+	/**
+	 * Adds the new user.
+	 *
+	 * @param userType the user type
+	 * @param lastname the lastname
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean addNewUser(String userType, String lastname, String firstname, String login, String password){
 		return model.addNewUser(userType, lastname, firstname, login, password);
 	}
 	
+	/**
+	 * Sign off.
+	 */
 	public void signOff() {
 		model.signOff();
 	}
 	
+	/**
+	 * Check user password.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean checkUserPassword(String login, String password) {
 		return model.checkUserPassword(login, password);
 	}
 	
+	/**
+	 * Gets the stock.
+	 *
+	 * @return the stock
+	 */
 	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return model.getStock();
 	}
 	
+	/**
+	 * Save.
+	 */
 	public void save(){
 		model.save();
 	}
 	
+	/**
+	 * Exit.
+	 */
 	public void exit(){
 		save();
 		view.displayExit();
 		System.exit(0);
 	}
 
+	/**
+	 * Gets the reservations.
+	 *
+	 * @return the reservations
+	 */
 	public List<Loan> getReservations() {
 		return  model.getReservations();
 	}
 
+	/**
+	 * Validate reservation.
+	 *
+	 * @param nbReservation the nb reservation
+	 * @return true, if successful
+	 */
 	public boolean validateReservation(int nbReservation) {
 		return model.validateReservation(nbReservation);
 	}
 
+	/**
+	 * Delete reservation.
+	 *
+	 * @param nbReservation the nb reservation
+	 * @return true, if successful
+	 */
 	public boolean deleteReservation(int nbReservation) {
 		return model.deleteReservation(nbReservation);
 	}
 
+	/**
+	 * Convert date.
+	 *
+	 * @param date the date
+	 * @return the gregorian calendar
+	 * @throws ParseException the parse exception
+	 */
 	public GregorianCalendar convertDate(String date) throws ParseException{
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date oldDate = format.parse(date);
@@ -105,35 +172,32 @@ public class Controller {
 		return newDate;
 	}
 	
+	/**
+	 * Book.
+	 *
+	 * @param ref the reference
+	 * @param amount the amount
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return true, if successful
+	 * @throws Exception the exception
+	 */
 	public boolean book(int ref, int amount, String startDate, String endDate) throws Exception {
 		
 		GregorianCalendar newStartDate = convertDate(startDate);
 		GregorianCalendar newEndDate = convertDate(endDate);
 		return model.book(ref, newStartDate, newEndDate, amount);
 		
-		
-		/*MaterialType materialType = null;
-		for(Entry<MaterialType, Integer> entry : getStock().entrySet()) {
-			
-		    MaterialType material = entry.getKey();
-		    
-		    if (material.getReference() == ref){
-		    	materialType = material;
-		    }
-		}
-		
-		
-		if(materialType != null){
-			if(getConnectedUser() instanceof Manager)
-				return model.book((Manager)getConnectedUser(), materialType, newStartDate, newEndDate, amount);
-			else
-				return model.book((Borrower)getConnectedUser(), materialType, newStartDate, newEndDate, amount);
-		}
-		else 
-			return false;
-			*/
 	}
 	
+	/**
+	 * Gets the available stock.
+	 *
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return the available stock
+	 * @throws ParseException the parse exception
+	 */
 	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
 			String startDate, String endDate) throws ParseException {
 		return model.getAvailableStock(convertDate(startDate), convertDate(endDate));

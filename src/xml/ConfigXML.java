@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package xml;
 
 
@@ -12,22 +15,25 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 
 /**
- * Classe d'enregistrement de fichiers de configuration au format XML
+ * Classe d'enregistrement de fichiers de configuration au format XML.
+ *
  * @author F. Dechavanne
  * @version 1.0.0
- *
  */
 public abstract class ConfigXML {
 	// Dossier de sauvegarde
 	//
+	/** The dossier. */
 	private static String dossier = "Config/";
 	
 	// XStream
 	//
+	/** The xstream. */
 	private static XStream xstream = new XStream(new DomDriver());
 	
 	/**
-	 * Enregistre une liste au format XML
+	 * Enregistre une liste au format XML.
+	 *
 	 * @param liste : la liste a enregistrer
 	 * @param nom : le nom de fichier a utiliser
 	 * @param version : la version du fichier
@@ -77,7 +83,8 @@ public abstract class ConfigXML {
 	}
 	
 	/**
-	 * Enregistre un dictionnaire au format XML
+	 * Enregistre un dictionnaire au format XML.
+	 *
 	 * @param dictionnaire : le dictionnaire a enregistrer
 	 * @param nom : le nom de fichier a utiliser
 	 * @param version : la version du fichier
@@ -125,7 +132,8 @@ public abstract class ConfigXML {
 	}
 	
 	/**
-	 * Charge une liste ou un dictionnaire enregistré au format XML
+	 * Charge une liste ou un dictionnaire enregistré au format XML.
+	 *
 	 * @param nom : le nom de fichier a charger
 	 * @param version : la version du fichier
 	 * @return le dictionnaire ou la liste chargée, null si une erreur est survenue
@@ -171,19 +179,21 @@ public abstract class ConfigXML {
 	}	
 	
 	/**
-	 * Définit le dossier a utiliser pour sauvegarder
+	 * Définit le dossier a utiliser pour sauvegarder.
+	 *
 	 * @param nouveauDossier : le nouveau dossier de sauvegarde
 	 */
 	public static void definirDossier(String nouveauDossier){dossier = nouveauDossier;}
 	
 	/**
-	 * Donne le dossier de sauvegarde utilisé par la classe
+	 * Donne le dossier de sauvegarde utilisé par la classe.
+	 *
 	 * @return le dossier de sauvegarde actuel
 	 */
 	public static String recupererDossier(){return dossier;}
 	
 	/**
-	 * Controle l'existence du dossier de sauvegarde et le crée si besoin est
+	 * Controle l'existence du dossier de sauvegarde et le crée si besoin est.
 	 */
 	private static void verifierExistenceDossier() {
 		// Créer le lien vers le dossier logique

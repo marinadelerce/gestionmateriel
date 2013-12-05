@@ -1,12 +1,9 @@
+/*
+ * 
+ */
 package model.manager;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-
-
-
-import model.loan.Loan;
-import model.material.MaterialType;
 import model.user.Borrower;
 import model.user.Manager;
 import model.user.Student;
@@ -14,19 +11,43 @@ import model.user.Teacher;
 import model.user.User;
 import model.user.Users;
 
+/**
+ * The Class UserManager.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class UserManager {
 	
+	/** The users. */
 	private Users users;
+	
+	/** The connected user. */
 	private User connectedUser;
+	
+	/** The manager. */
 	private Manager manager;
-	private GregorianCalendar currentDate;
+	
+	/** The Constant conversion. */
 	private final static int conversion = 86400000;
 
+	/**
+	 * Instantiates a new user manager.
+	 */
 	public UserManager() {
 		this.users = new Users();
 		this.connectedUser = null;
 	}
 
+	/**
+	 * Adds the new user.
+	 *
+	 * @param userType the user type
+	 * @param lastname the lastname
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean addNewUser(String userType, String lastname,
 			String firstname, String login, String password) {
 		if (!checkSameUser(login)) {
@@ -51,36 +72,79 @@ public class UserManager {
 			return false;
 	}
 
+	/**
+	 * Check same user.
+	 *
+	 * @param login the login
+	 * @return true, if successful
+	 */
 	private boolean checkSameUser(String login) {
 		return users.checkSameUser(login);
 	}
 
+	/**
+	 * Check user password.
+	 *
+	 * @param login the login
+	 * @param password the password
+	 * @return true, if successful
+	 */
 	public boolean checkUserPassword(String login, String password) {
 		if ((connectedUser = users.checkUserPassword(login, password))!=null) return true;
 		else return false;
 	}
 
+	/**
+	 * Gets the connected user.
+	 *
+	 * @return the connected user
+	 */
 	public User getConnectedUser() {
 		return this.connectedUser;
 	}
 
+	/**
+	 * Sign off.
+	 */
 	public void signOff() {
 		connectedUser = null;
 
 	}
 
+	/**
+	 * Delete user.
+	 *
+	 * @param lastname the lastname
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @return true, if successful
+	 */
 	public boolean deleteUser(String lastname, String firstname, String login) {
 		return users.deleteUser(lastname, firstname, login);
 	}
 	
+	/**
+	 * Save.
+	 */
 	public void save(){
 		users.save();
 	}
 	
+	/**
+	 * Load.
+	 */
 	public void load(){
 		users.load();
 	}
 
+	/**
+	 * Can book.
+	 *
+	 * @param connectedUser the connected user
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return true, if successful
+	 */
 	public boolean canBook(User connectedUser, GregorianCalendar startDate,
 			GregorianCalendar endDate) {
 		if(connectedUser instanceof Manager){

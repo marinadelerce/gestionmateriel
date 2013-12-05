@@ -1,25 +1,46 @@
+/*
+ * 
+ */
 package model.user;
 
 import java.util.HashMap;
 
+/**
+ * The Class Manager.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class Manager extends User {
 
+	/**
+	 * Instantiates a new manager.
+	 *
+	 * @param name the name
+	 * @param firstname the firstname
+	 * @param login the login
+	 * @param password the password
+	 */
 	public Manager(String name, String firstname, String login, String password) {
 		super(name, firstname, login, password);
 	}
-
-	public Manager(HashMap<String, Object> description){
-		super((String)description.get("name"), (String)description.get("firstname"), (String)description.get("login"), (String)description.get("password"));
-	}
 	
+	/**
+	 * Instantiates a new manager.
+	 */
 	public Manager(){super();}
 	
+	/* (non-Javadoc)
+	 * @see model.user.User#toString()
+	 */
 	@Override
 	public String toString(){
 		return "Admin: " + this.getFirstname() + " " + this.getName() + "id: " + this.getLogin();
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see model.user.User#getSerializableDescription()
+	 */
 	@Override
 	public HashMap<String, Object> getSerializableDescription(){
 		
@@ -33,6 +54,9 @@ public class Manager extends User {
 		return userDescription;
 	}
 
+	/* (non-Javadoc)
+	 * @see model.user.User#setObject(java.util.HashMap)
+	 */
 	@Override
 	public void setObject(HashMap<String, Object> description){
 		this.lastname = (String) description.get("name");

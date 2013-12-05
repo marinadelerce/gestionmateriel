@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package model.manager;
 
 import static org.junit.Assert.*;
@@ -22,6 +25,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * The Class MaterialManagerTest.
+ */
 public class MaterialManagerTest extends TestCase {
 
 	/*private MaterialManager materialManager;

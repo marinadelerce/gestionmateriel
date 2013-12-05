@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package model.material;
 
 import java.util.ArrayList;
@@ -9,22 +12,44 @@ import java.util.Map.Entry;
 
 import xml.ConfigXML;
 
-import model.user.User;
 
+/**
+ * The Class Stock.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class Stock {
 	
+	/** The stock. */
 	private HashMap<MaterialType, ArrayList<Material>> stock;
+	
+	/** The save file path. */
 	private final String SAVE_FILE_PATH = "stock";
+	
+	/** The save file version. */
 	private final String SAVE_FILE_VERSION = "1.0.0";
 	
+	/**
+	 * Instantiates a new stock.
+	 */
 	public Stock(){
 		stock = new HashMap<MaterialType, ArrayList<Material>>();
 	}
 	
+	/**
+	 * Instantiates a new stock.
+	 *
+	 * @param stock2 the stock2
+	 */
 	public Stock(HashMap<MaterialType, ArrayList<Material>> stock2){
 		this.stock = stock2;
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param material the material
+	 */
 	public void add(Material material){
 		if (!stock.containsKey(material.getMaterialType())){
 			ArrayList<Material> materials = new ArrayList<Material>();
@@ -37,6 +62,12 @@ public class Stock {
 		}
 	}
 	
+	/**
+	 * Removes the.
+	 *
+	 * @param material the material
+	 * @throws Exception the exception
+	 */
 	public void remove(Material material) throws Exception{
 		
 		
@@ -51,26 +82,23 @@ public class Stock {
 		}
 	}
 	
-	/*public void remove(int reference) throws Exception{
-		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
-			
-		    MaterialType material = entry.getKey();
-		    
-		    if (material.getReference() == reference){
-		    	remove(material);
-		    	return;
-		    }
-		}
-		
-		throw new Exception("Référence inexistante dans en stock");
-	}*/
-	
+	/**
+	 * Gets the stock.
+	 *
+	 * @param materialType the material type
+	 * @return the stock
+	 */
 	public ArrayList<Material> getStock(MaterialType materialType){
 		if (!stock.containsKey(materialType)) return null;
 		else return stock.get(materialType);
 	}
 	
+	/**
+	 * Gets the stock.
+	 *
+	 * @param reference the reference
+	 * @return the stock
+	 */
 	public ArrayList<Material> getStock(int reference){
 		
 		for(MaterialType materialType : stock.keySet()) {
@@ -83,31 +111,20 @@ public class Stock {
 		return null;
 	}
 	
-	/*public Material getObject(int reference) throws Exception{
-		
-		for(Entry<MaterialType, Integer> entry : stock.entrySet()) {
-			
-		    MaterialType materialtype = entry.getKey();
-		    
-		    if (materialtype.getReference() == reference){
-		    	
-		    	return new Material(materialtype, Integer.toString(getNewSerialNumber()));
-
-		    }
-		}
-		
-		throw new Exception("Référence inexistante dans le stock");
-		
-	}*/
 	
+	/**
+	 * Gets the stock.
+	 *
+	 * @return the stock
+	 */
 	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return stock;
 	}
 	
-	/*public int getNewSerialNumber(){
-		return currentSerialNumber++;
-	}*/
 	
+	/**
+	 * Load.
+	 */
 	public void load(){
 		
 		List<HashMap<String, Object>> description = (List<HashMap<String, Object>>) ConfigXML.load(SAVE_FILE_PATH, SAVE_FILE_VERSION);
@@ -128,12 +145,20 @@ public class Stock {
 		System.out.println("Stock loaded");
 	}
 	
+	/**
+	 * Save.
+	 */
 	public void save(){
 		
 		// save stock in the file
 		ConfigXML.store(getSerializableDescription(), SAVE_FILE_PATH, SAVE_FILE_VERSION);
 	}
 	
+	/**
+	 * Gets the serializable description.
+	 *
+	 * @return the serializable description
+	 */
 	public List<HashMap<String, Object>> getSerializableDescription(){
 		
 		List<HashMap<String, Object>> stockDescription = new LinkedList<HashMap<String, Object>>();
@@ -161,11 +186,20 @@ public class Stock {
 		return stockDescription;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
 	@Override
 	public Object clone(){
 		return new Stock(this.stock);
 	}
 
+	/**
+	 * Gets the material type.
+	 *
+	 * @param ref the ref
+	 * @return the material type
+	 */
 	public MaterialType getMaterialType(int ref) {
 		for(MaterialType materialType : stock.keySet()) {
 		    if (materialType.getReference() == ref){
@@ -175,6 +209,12 @@ public class Stock {
 		return null;
 	}
 	
+	/**
+	 * Creates the object.
+	 *
+	 * @param className the class name
+	 * @return the object
+	 */
 	static Object createObject(String className) {
 		 
 		Object object = null;

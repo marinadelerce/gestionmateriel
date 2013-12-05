@@ -1,9 +1,11 @@
+/*
+ * 
+ */
 package model.manager;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,24 +19,33 @@ import model.user.Borrower;
 import model.user.Manager;
 import model.user.User;
 
+/**
+ * The Class MaterialManager.
+ * @author Marina Delerce & Romain Guillot 
+ * @version 1.0.0
+ */
 public class MaterialManager {
 
+	/** The stock. */
 	private Stock stock;
+	
+	/** The loans. */
 	private Loans loans;
-	//private Reservations reservations;
+	
+	/** The id loan. */
 	private static int idLoan = 0;
+	
+	/** The Constant conversion. */
 	private final static int conversion = 86400000;
 
+	/**
+	 * Instantiates a new material manager.
+	 */
 	public MaterialManager() {
 		stock = new Stock();
 		loans = new Loans();
-		//reservations = new Reservations();
 	}
 
-	/*public int calculateMaxDurationLoan(MaterialType material,
-			GregorianCalendar date) {
-		return 0;
-	}*/
 
 	/*public Stock predictStock(GregorianCalendar date) throws Exception {
 
@@ -108,21 +119,39 @@ public class MaterialManager {
 		return true;
 	}*/
 	
+	/**
+	 * Gets the stock.
+	 *
+	 * @return the stock
+	 */
 	public Map<MaterialType, ArrayList<Material>> getStock(){
 		return stock.getStock();
 	}
 	
+	/**
+	 * Save.
+	 */
 	public void save(){
 		loans.save();
 		stock.save();
 	}
 	
+	/**
+	 * Load.
+	 */
 	public void load(){
 		loans.load();
 		stock.load();
 	}
 
 
+	/**
+	 * Calculate difference.
+	 *
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return the int
+	 */
 	private int calculateDifference(GregorianCalendar startDate, GregorianCalendar endDate) {
 		int result = 0;
 
@@ -133,6 +162,12 @@ public class MaterialManager {
 		return result;
 	}
 
+	/**
+	 * Validate loan.
+	 *
+	 * @param loanId the loan id
+	 * @return true, if successful
+	 */
 	public boolean validateLoan(int loanId) {
 		Loan loan = this.searchLoan(loanId);
 		if(loan == null) {
@@ -144,6 +179,11 @@ public class MaterialManager {
 		}
 	}
 	
+	/**
+	 * Gets the reservations.
+	 *
+	 * @return the reservations
+	 */
 	public List<Loan> getReservations() {
 		List<Loan> reservations = new ArrayList<Loan>();
 		for(Loan loan: loans.getLoans()) {
@@ -154,6 +194,12 @@ public class MaterialManager {
 		return reservations;
 	}
 
+	/**
+	 * Search loan.
+	 *
+	 * @param nbReservation the nb reservation
+	 * @return the loan
+	 */
 	public Loan searchLoan(int nbReservation) {
 		Loan loanToValidate = null;
 		for(Loan loan : getReservations()){
@@ -163,6 +209,12 @@ public class MaterialManager {
 		return loanToValidate;
 	}
 
+	/**
+	 * Delete loan.
+	 *
+	 * @param loan the loan
+	 * @return true, if successful
+	 */
 	public boolean deleteLoan(Loan loan) {
 		if(loans.getLoans().contains(loan)) {
 			loans.remove(loan);
@@ -171,6 +223,11 @@ public class MaterialManager {
 		return false;
 	}
 
+	/**
+	 * Gets the borrowed material.
+	 *
+	 * @return the borrowed material
+	 */
 	public Map<MaterialType, ArrayList<Material>> getBorrowedMaterial()
 	{
 		Map<MaterialType, ArrayList<Material>> loansByMaterialType = new HashMap<MaterialType, ArrayList<Material>>();
@@ -189,6 +246,13 @@ public class MaterialManager {
 		return loansByMaterialType;
 	}
 	
+	/**
+	 * Gets the available stock.
+	 *
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return the available stock
+	 */
 	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
 			GregorianCalendar startDate, GregorianCalendar endDate) {
 		
@@ -218,6 +282,14 @@ public class MaterialManager {
 		return availableStock;
 	}
 
+	/**
+	 * Max time loan not reach.
+	 *
+	 * @param ref the ref
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return true, if successful
+	 */
 	public boolean maxTimeLoanNotReach(int ref, GregorianCalendar startDate,
 			GregorianCalendar endDate) {
 		MaterialType materialType = stock.getMaterialType(ref);
@@ -229,6 +301,16 @@ public class MaterialManager {
 		return false;
 	}
 
+	/**
+	 * Book.
+	 *
+	 * @param ref the ref
+	 * @param connectedUser the connected user
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @param quantity the quantity
+	 * @return true, if successful
+	 */
 	public boolean book(int ref, User connectedUser,
 			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) {
 		Map<MaterialType, ArrayList<Material>> availableStock = this.getAvailableStock(startDate, endDate);
@@ -248,10 +330,14 @@ public class MaterialManager {
 			return true;
 		}
 		
-		System.out.println("Emrpunt refuse material manager");
 		return false;
 	}
 
+	/**
+	 * Adds the material.
+	 *
+	 * @param material the material
+	 */
 	public void addMaterial(Material material) {
 		stock.add(material);
 		
