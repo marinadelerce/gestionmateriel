@@ -13,19 +13,19 @@ import java.util.HashMap;
 public class MaterialType{
 
 	/** The name. */
-	private String name;
+	protected String name;
 	
 	/** The brand. */
-	private String brand;
+	protected String brand;
 	
 	/** The description. */
-	private String description;
+	protected String description;
 	
 	/** The reference. */
-	private int reference;
+	protected int reference;
 	
 	/** The max time loan. */
-	private int maxTimeLoan;
+	protected int maxTimeLoan;
 
 	/**
 	 * Instantiates a new material type.
@@ -55,13 +55,7 @@ public class MaterialType{
 	 *
 	 * @param description the description
 	 */
-	public void setObject(HashMap<String, Object> description){
-		this.name = (String)description.get("name");
-		this.brand = (String)description.get("brand");
-		this.description = (String)description.get("description");
-		this.reference = (int)description.get("reference");
-		this.maxTimeLoan = (int)description.get("maxTimeLoan");
-	}
+	public void setObject(HashMap<String, Object> description){}
 	
 	/**
 	 * Gets the name.
@@ -132,5 +126,13 @@ public class MaterialType{
 	 */
 	public HashMap<String, Object> getSerializableDescription(){
 		return null;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof MaterialType)) return false;
+		MaterialType m = (MaterialType)o;
+		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
+		return true;
 	}
 }

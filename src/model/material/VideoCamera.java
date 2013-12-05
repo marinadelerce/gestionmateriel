@@ -69,6 +69,18 @@ public class VideoCamera extends MaterialType {
 	 */
 	@Override
 	public void setObject(HashMap<String, Object> description){
-		super.setObject(description);
+		this.name = (String)description.get("name");
+		this.brand = (String)description.get("brand");
+		this.description = (String)description.get("description");
+		this.reference = (int)description.get("reference");
+		this.maxTimeLoan = (int)description.get("maxTimeLoan");
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof VideoCamera)) return false;
+		VideoCamera m = (VideoCamera)o;
+		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
+		return true;
 	}
 }

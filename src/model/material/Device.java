@@ -13,7 +13,7 @@ import java.util.HashMap;
 public abstract class Device extends MaterialType {
 
 	/** The type os. */
-	private OS typeOs;
+	protected OS typeOs;
 
 	/**
 	 * Instantiates a new device.
@@ -65,9 +65,13 @@ public abstract class Device extends MaterialType {
 	 * @see model.material.MaterialType#setObject(java.util.HashMap)
 	 */
 	@Override
-	public void setObject(HashMap<String, Object> description){
-		typeOs = (OS)description.get("typeOS");
-		description.remove("typeOS");
-		super.setObject(description);
+	public void setObject(HashMap<String, Object> description){}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof Device)) return false;
+		Device m = (Device)o;
+		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan || typeOs != m.typeOs) return false; 
+		return true;
 	}
 }

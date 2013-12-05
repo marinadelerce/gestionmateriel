@@ -61,8 +61,20 @@ public class SmartPhone extends Device {
 	/* (non-Javadoc)
 	 * @see model.material.Device#setObject(java.util.HashMap)
 	 */
-	@Override
 	public void setObject(HashMap<String, Object> description){
-		super.setObject(description);
+		this.name = (String)description.get("name");
+		this.brand = (String)description.get("brand");
+		this.description = (String)description.get("description");
+		this.reference = (int)description.get("reference");
+		this.maxTimeLoan = (int)description.get("maxTimeLoan");
+		this.typeOs = (OS) description.get("typeOS");
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof SmartPhone)) return false;
+		SmartPhone m = (SmartPhone)o;
+		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan || typeOs != m.typeOs) return false; 
+		return true;
 	}
 }

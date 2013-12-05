@@ -94,4 +94,13 @@ public class Material {
 		}
 		return object;
 	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof Material)) return false;
+		Material m = (Material)o;
+		if (m.serial_number != this.serial_number) return false;
+		if (!m.material_type.equals(material_type)) return false;
+		return true;
+	}
 }

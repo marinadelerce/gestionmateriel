@@ -67,8 +67,19 @@ public class HeadPhone extends MaterialType {
 	/* (non-Javadoc)
 	 * @see model.material.MaterialType#setObject(java.util.HashMap)
 	 */
-	@Override
 	public void setObject(HashMap<String, Object> description){
-		super.setObject(description);
+		this.name = (String)description.get("name");
+		this.brand = (String)description.get("brand");
+		this.description = (String)description.get("description");
+		this.reference = (int)description.get("reference");
+		this.maxTimeLoan = (int)description.get("maxTimeLoan");
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if (!(o instanceof HeadPhone)) return false;
+		HeadPhone m = (HeadPhone)o;
+		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
+		return true;
 	}
 }
