@@ -166,17 +166,24 @@ public class MaterialManager {
 		return false;
 	}
 
-	public Map<MaterialType, ArrayList<Material>> getBorrowedMaterial()
+	public Map<MaterialType, ArrayList<Material>> getBorrowedMaterial(GregorianCalendar startDate, GregorianCalendar endDate)
 	{
 		Map<MaterialType, ArrayList<Material>> loansByMaterialType = new HashMap<MaterialType, ArrayList<Material>>();
 		
 		//recuperation du materiel emprunté
 		for(Loan loan: loans.getLoans()) {
-			if(!loansByMaterialType.containsKey(loan.getMaterials().get(0).getMaterialType())) {
-				loansByMaterialType.put(loan.getMaterials().get(0).getMaterialType(), new ArrayList<Material>(loan.getMaterials()));
-			} else {
-				for(Material material: loan.getMaterials()) {
-					loansByMaterialType.get(loan.getMaterials().get(0).getMaterialType()).add(material);
+			if((loan.getStartDate().before(startDate) && loan.getEndDate().after(startDate))
+				|| loan.getStartDate().equals(startDate)
+				|| (loan.getStartDate().after(startDate) && loan.getEndDate().before(endDate))
+				|| loan.getEndDate().equals(endDate)
+				|| (loan.getStartDate().before(endDate) && loan.getEndDate().after(endDate))
+			) {
+				if(!loansByMaterialType.containsKey(loan.getMaterials().get(0).getMaterialType())) {
+					loansByMaterialType.put(loan.getMaterials().get(0).getMaterialType(), new ArrayList<Material>(loan.getMaterials()));
+				} else {
+					for(Material material: loan.getMaterials()) {
+						loansByMaterialType.get(loan.getMaterials().get(0).getMaterialType()).add(material);
+					}
 				}
 			}
 		}
@@ -189,7 +196,7 @@ public class MaterialManager {
 		
 		Map<MaterialType, ArrayList<Material>> loansByMaterialType = new HashMap<MaterialType, ArrayList<Material>>();
 		
-		loansByMaterialType = getBorrowedMaterial();
+		loansByMaterialType = getBorrowedMaterial(startDate, endDate);
 		Map<MaterialType, ArrayList<Material>> availableStock = new HashMap<MaterialType, ArrayList<Material>>();
 		
 		for(MaterialType materialType: stock.getStock().keySet()){
@@ -224,17 +231,16 @@ public class MaterialManager {
 		return false;
 	}
 
-	public boolean book(int ref, User connectedUser,
+	public Loan book(int ref, User connectedUser,
 			GregorianCalendar startDate, GregorianCalendar endDate, int quantity) {
 		Map<MaterialType, ArrayList<Material>> availableStock = this.getAvailableStock(startDate, endDate);
 		MaterialType materialType = stock.getMaterialType(ref);
-		
+		Loan book = null;
 		if(availableStock.get(materialType).size() >= quantity) {
 			List<Material> materials = new ArrayList<Material>();
 			for(int i = 0; i < quantity; i++) {
 				materials.add(availableStock.get(materialType).get(i));
 			}
-			Loan book = null;
 			if(connectedUser instanceof Manager)
 				book = new Loan((Manager)connectedUser, materials, startDate, endDate);
 			if(connectedUser instanceof Borrower)
@@ -242,12 +248,11 @@ public class MaterialManager {
 			loans.add(book);
 		}
 		
-		return false;
+		return book;
 	}
 
-	public void addMaterial(Material material) {
-		stock.add(material);
-		
+	public boolean addMaterial(Material material) {
+		return stock.add(material);
 	}
 
 }

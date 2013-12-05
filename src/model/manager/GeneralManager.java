@@ -29,13 +29,13 @@ public class GeneralManager {
 		return userManager.addNewUser(userType, lastname, firstname, login, password);
 	}
 	
-	public boolean book(int ref, GregorianCalendar startDate,
+	public Loan book(int ref, GregorianCalendar startDate,
 			GregorianCalendar endDate, int quantity) {
 		if (userManager.canBook(userManager.getConnectedUser(), startDate, endDate)
 				&& materialManager.maxTimeLoanNotReach(ref, startDate, endDate)) {
 			return materialManager.book(ref, userManager.getConnectedUser(), startDate, endDate, quantity);
 		}
-		return false;
+		return null;
 	}
 
 	public boolean checkUserPassword(String login, String password) {
@@ -89,9 +89,8 @@ public class GeneralManager {
 		return materialManager.getAvailableStock(startDate, endDate);
 	}
 
-	public void addMaterial(Material material) {
-		materialManager.addMaterial(material);
-		
+	public boolean addMaterial(Material material) {
+		return materialManager.addMaterial(material);
 	}
 
 	

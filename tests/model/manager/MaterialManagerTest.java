@@ -2,6 +2,7 @@ package model.manager;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -22,6 +23,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import utils.DateUtils;
+import controller.Controller;
+
 public class MaterialManagerTest extends TestCase {
 
 	private MaterialManager materialManager;
@@ -30,10 +34,61 @@ public class MaterialManagerTest extends TestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		this.materialManager = new MaterialManager();
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	private Loans init() {
+		Loans loans = new Loans();
+		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
+		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
+				32, OS.ANDROID, 3);
+		Material tel1 = new Material(materialtype, "gs21");
+		Material tel2 = new Material(materialtype, "gs22");
+		Material tel3 = new Material(materialtype, "gs23");
+		Material tel4 = new Material(materialtype, "gs24");
+		materialManager.addMaterial(tel1);
+		materialManager.addMaterial(tel2);
+		materialManager.addMaterial(tel3);
+		materialManager.addMaterial(tel4);
+		List<Material> materials = new ArrayList<Material>();
+		materials.add(tel1);
+		materials.add(tel2);
+		List<Material> materials2 = new ArrayList<Material>();
+		materials2.add(tel3);
+		materials2.add(tel4);
+		Loan newLoan1 = null;
+		try {
+			newLoan1 = new Loan(newManager, materials,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"));
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
+		loans.add(newLoan1);
+		Loan newLoan2 = null;
+		try {
+			newLoan2 = new Loan(newManager, materials,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"));
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
+		loans.add(newLoan2);
+
+		return loans;
+	}
+
+	@Test
+	public void testAddMaterial() {
+		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
+				32, OS.ANDROID, 3);
+		Material tel1 = new Material(materialtype, "gs21");
+		materialManager.addMaterial(tel1);
+		assertNotNull(materialManager.getStock());
 	}
 
 	@Test
@@ -45,10 +100,10 @@ public class MaterialManagerTest extends TestCase {
 	public void testCalculateMaxDurationLoan() {
 		fail("Not yet implemented");
 	}
-
+	
 	@Test
-	public void testPredictStock() {
-		fail("Not yet implemented");
+	public void testAvailableStock(){
+		
 	}
 
 	@Test
@@ -69,48 +124,53 @@ public class MaterialManagerTest extends TestCase {
 	@Test
 	public void testValidateLoan() {
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
+		Loan booked = null;
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
-		Material material = new Material(materialtype, "zede");
-		Loan newLoan = new Loan(newManager, material, 3,
-				new GregorianCalendar(2013, Calendar.DECEMBER, 2),
-				new GregorianCalendar(2013, Calendar.DECEMBER, 3), false, false);
-		materialManager.validateLoan(newLoan);
-		assertTrue(newLoan.isValidate());
+		Material tel1 = new Material(materialtype, "gs21");
+		materialManager.addMaterial(tel1);
+		try {
+			booked = materialManager.book(32, newManager,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"), 1);
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
+		assertNotNull(booked);
+		materialManager.validateLoan(booked.getId());
+		assertTrue(booked.isValidate());
 	}
-	
+
 	@Test
-	public void testDeleteLoan(){
-		Loans reservations = new Loans();
+	public void testDeleteLoan() {
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
-		Material material = new Material(materialtype, "zede");
-		Loan newLoan = new Loan(newManager,material, 3,
-				new GregorianCalendar(2013, Calendar.DECEMBER, 2),
-				new GregorianCalendar(2013, Calendar.DECEMBER, 3), false, false);
+		Material tel1 = new Material(materialtype, "gs21");
+		ArrayList<Material> materials = new ArrayList<Material>();
+		materials.add(tel1);
+		Loan newLoan = null;
+		try {
+			newLoan = new Loan(newManager, materials,
+					DateUtils.convertDate("04/12/2013"),
+					DateUtils.convertDate("05/12/2013"));
+		} catch (ParseException e) {
+			System.out.println("Problème de conversion de date (jj/mm/aaaa) !");
+		}
 		materialManager.getReservations().add(newLoan);
-		assertNotNull(reservations);
+		assertNotNull(materialManager.getReservations());
 		materialManager.deleteLoan(newLoan);
 		assertNull(materialManager.searchLoan(newLoan.getId()));
 	}
 
 	@Test
-	public void testGetReservations() {
-		Loans reservations = new Loans();
-		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
-		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
-				32, OS.ANDROID, 3);
-		Material material = new Material(materialtype, "zede");
-		Loan newLoan = new Loan(newManager,material, 3,
-				new GregorianCalendar(2013, Calendar.DECEMBER, 2),
-				new GregorianCalendar(2013, Calendar.DECEMBER, 3), false, false);
-		materialManager.getReservations().add(newLoan);
-		assertNotNull(reservations);
+	public void testGetReservations() throws ParseException {
+		Loans loans = init();
+		assertNotNull(loans.getLoans());
 	}
 
 	@Test
-	public void testSearchLoan() {
+	public void testSearchLoan() throws ParseException {
 		Borrower newManager = new Student("Delerce", "Marina", "mutti", "dm");
 		MaterialType materialtype = new SmartPhone("Galaxy S", "Samsung", "  ",
 				32, OS.ANDROID, 3);
@@ -119,12 +179,14 @@ public class MaterialManagerTest extends TestCase {
 		List<Material> materials = new ArrayList<Material>();
 		materials.add(tel1);
 		materials.add(tel2);
-		//Loan newLoan = new Loan(newManager,materials,);
+		Loan newLoan = new Loan(newManager, materials,
+				DateUtils.convertDate("04/12/2013"),
+				DateUtils.convertDate("05/12/2013"));
 		materialManager.getReservations().add(newLoan);
 		int id = newLoan.getId();
 		Loan searchedLoan = materialManager.searchLoan(id);
 		assertNotNull(searchedLoan);
-		assertEquals(searchedLoan, newLoan); //FIXME
+		assertEquals(searchedLoan, newLoan); // FIXME
 	}
 
 }

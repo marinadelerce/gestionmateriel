@@ -19,15 +19,19 @@ public class Stock {
 		this.stock = stock2;
 	}
 	
-	public void add(Material material){
+	public boolean add(Material material){
 		if (!stock.containsKey(material.getMaterialType())){
 			ArrayList<Material> materials = new ArrayList<Material>();
 			materials.add(material);
 			stock.put(material.getMaterialType(),materials);
+			return true;
 		}
 		else {
-			stock.get(material.getMaterialType()).add(material);
-			
+			if(!stock.get(material.getMaterialType()).contains(material)){
+				stock.get(material.getMaterialType()).add(material);
+				return true;
+			}
+			return false;
 		}
 	}
 	

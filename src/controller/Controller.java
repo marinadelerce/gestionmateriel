@@ -5,18 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import model.loan.Loan;
 import model.manager.GeneralManager;
 import model.material.Material;
 import model.material.MaterialType;
-import model.user.Borrower;
-import model.user.Manager;
 import model.user.User;
+import utils.DateUtils;
 import view.ConsoleView;
 
 public class Controller {
@@ -92,20 +89,14 @@ public class Controller {
 	public boolean deleteReservation(int nbReservation) {
 		return model.deleteReservation(nbReservation);
 	}
-
-	public GregorianCalendar convertDate(String date) throws ParseException{
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Date oldDate = format.parse(date);
-		GregorianCalendar newDate = new GregorianCalendar();
-		newDate.setTime(oldDate);
-		
-		return newDate;
-	}
 	
 	public boolean book(int ref, int amount, String startDate, String endDate) throws Exception {
-		GregorianCalendar newStartDate = convertDate(startDate);
-		GregorianCalendar newEndDate = convertDate(endDate);
-		return model.book(ref, newStartDate, newEndDate, amount);
+		GregorianCalendar newStartDate = DateUtils.convertDate(startDate);
+		GregorianCalendar newEndDate = DateUtils.convertDate(endDate);
+		if (model.book(ref, newStartDate, newEndDate, amount) != null)
+				return true;
+		else
+			return false;
 		
 		
 		/*MaterialType materialType = null;
@@ -132,7 +123,7 @@ public class Controller {
 	
 	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
 			String startDate, String endDate) throws ParseException {
-		return model.getAvailableStock(convertDate(startDate), convertDate(endDate));
+		return model.getAvailableStock(DateUtils.convertDate(startDate), DateUtils.convertDate(endDate));
 	}
 
 }
