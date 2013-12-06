@@ -3,12 +3,18 @@
  */
 package view;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import utils.DateUtils;
 import model.loan.Loan;
+import model.loan.Loans;
 import model.material.Material;
 import model.material.MaterialType;
 import model.user.Borrower;
@@ -18,21 +24,23 @@ import controller.Controller;
 
 /**
  * The Class ConsoleView.
- * @author Marina Delerce & Romain Guillot 
+ * 
+ * @author Marina Delerce & Romain Guillot
  * @version 1.0.0
  */
 public class ConsoleView {
 
 	/** The controller. */
 	private Controller controller;
-	
+
 	/** The read scanner */
 	private Scanner read;
 
 	/**
 	 * Instantiates a new console view.
-	 *
-	 * @param control the controller
+	 * 
+	 * @param control
+	 *            the controller
 	 */
 	public ConsoleView(Controller control) {
 		controller = control;
@@ -41,8 +49,9 @@ public class ConsoleView {
 
 	/**
 	 * Begin.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void begin() throws Exception {
 		int result;
@@ -71,8 +80,9 @@ public class ConsoleView {
 
 	/**
 	 * Display menu.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	public void displayMenu() throws Exception {
 		System.out.println("Menu");
@@ -104,8 +114,9 @@ public class ConsoleView {
 
 	/**
 	 * Display material type.
-	 *
-	 * @param materialT the material t
+	 * 
+	 * @param materialT
+	 *            the material t
 	 */
 	public void displayMaterialType(MaterialType materialT) {
 		System.out.print(materialT.toString());
@@ -113,8 +124,9 @@ public class ConsoleView {
 
 	/**
 	 * Display users.
-	 *
-	 * @param users the users
+	 * 
+	 * @param users
+	 *            the users
 	 */
 	public void displayUsers(ArrayList<User> users) {
 		for (User user : users) {
@@ -124,21 +136,29 @@ public class ConsoleView {
 
 	/**
 	 * Display borrower menu.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	private void displayBorrowerMenu() throws Exception {
 		int choice;
-		System.out.println("1: Se déconnecter");
-		System.out.println("2: Emprunter");
+		System.out.println("1: Emprunter");
+		System.out.println("2: Afficher mes emprunts");
+		System.out.println("3: Se déconnecter ");
 		choice = read.nextInt();
 		read.nextLine();
 		switch (choice) {
 		case 1:
-			signOff();
-			break;
-		case 2:
 			borrowMenu();
+			break;
+
+		case 2:
+			displayLoans();
+			displayBorrowerMenu();
+			break;
+
+		case 3:
+			signOff();
 			break;
 
 		default:
@@ -146,10 +166,42 @@ public class ConsoleView {
 		}
 	}
 
+	private void displayLoans() {
+		Loans userLoans = controller.getLoans(controller.getConnectedUser());
+
+		System.out.println(">> Emprunts en cours: ");
+		for (Loan loan : userLoans.getLoans()) {
+			if ((loan.getStartDate().before(new GregorianCalendar()) && loan
+					.getEndDate().after(new GregorianCalendar()))
+					|| loan.getStartDate().equals(new GregorianCalendar())) {
+				System.out.println("> " + loan.toString());
+			}
+		}
+
+		System.out.println(">> Réservations acceptées: ");
+		for (Loan loan : userLoans.getLoans()) {
+			if ((loan.getStartDate().after(new GregorianCalendar()) && loan
+					.isValidate())) {
+				System.out.println("> " + loan.toString());
+			}
+		}
+
+		System.out.println(">> Historique des emprunts: ");
+		for (Loan loan : userLoans.getLoans()) {
+			if (((loan.getEndDate().before(new GregorianCalendar()) || loan
+					.getEndDate().equals(new GregorianCalendar())) && loan
+					.isValidate())) {
+				System.out.println("> " + loan.toString());
+			}
+		}
+
+	}
+
 	/**
 	 * Display manager menu.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	private void displayManagerMenu() throws Exception {
 		int choice;
@@ -158,7 +210,8 @@ public class ConsoleView {
 		System.out.println("3: Valider une réservation");
 		System.out.println("4: Supprimer une réservation");
 		System.out.println("5: Créer une réservation");
-		System.out.println("6: Se déconnecter");
+		System.out.println("6: Afficher le stock");
+		System.out.println("7: Se déconnecter");
 		choice = read.nextInt();
 		read.nextLine();
 		switch (choice) {
@@ -183,6 +236,10 @@ public class ConsoleView {
 			break;
 
 		case 6:
+			displayCurrentStock();
+			break;
+
+		case 7:
 			signOff();
 			break;
 
@@ -192,9 +249,50 @@ public class ConsoleView {
 		displayManagerMenu();
 	}
 
+	private void displayCurrentStock() throws ParseException {
+		GregorianCalendar currentDate = new GregorianCalendar();
+		Map<MaterialType, ArrayList<Material>> availableStock = null;
+		Map<MaterialType, ArrayList<Material>> borrowedStock = null;
+
+		try {
+			availableStock = controller.getAvailableStock(
+					DateUtils.dateToString(currentDate),
+					DateUtils.dateToString(currentDate));
+		} catch (ParseException e) {
+			System.out.println("Problème de format de date (jj/mm/aaaa) !");
+		}
+
+		System.out.println("Matériel(s) disponible(s): ");
+		if (!availableStock.isEmpty()) {
+			for (MaterialType mt : availableStock.keySet()) {
+				System.out.println(">> " + mt.toString());
+				for (Material m : availableStock.get(mt)) {
+					System.out.println("> " + m.toString());
+				}
+			}
+		} else {
+			System.out.println("Aucun.");
+		}
+
+		borrowedStock = controller.getBorrowedStock(DateUtils.dateToString(currentDate),
+				DateUtils.dateToString(currentDate));
+
+		System.out.println("Matériel(s) emprunté(s): ");
+		if (!borrowedStock.isEmpty()) {
+			for (MaterialType mt : borrowedStock.keySet()) {
+				System.out.println(">> " + mt.toString());
+				for (Material m : borrowedStock.get(mt)) {
+					System.out.println("> " + m.toString());
+				}
+			}
+		} else {
+			System.out.println("Aucun.");
+		}
+	}
+
 	/**
 	 * Delete reservation.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	private boolean deleteReservation() {
@@ -217,7 +315,7 @@ public class ConsoleView {
 
 	/**
 	 * Validate reservation.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	private boolean validateReservation() {
@@ -250,8 +348,9 @@ public class ConsoleView {
 
 	/**
 	 * Borrow menu.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	private void borrowMenu() throws Exception {
 		System.out
@@ -269,26 +368,35 @@ public class ConsoleView {
 		System.out.println("Entrez la quantite que vous souhaitez");
 		int amount = read.nextInt();
 		read.nextLine();
-		
+
 		boolean achieve = false;
 
-		try {achieve = controller.book(ref, amount, startDate, endDate);}
-		catch(Exception e){System.out.println("Erreur à l'enregistrement");}
-		
-		if (achieve) System.out.println("Emprunt enregistré");
-		else System.out.println("Erreur à l'enregistrement");
-		
+		try {
+			achieve = controller.book(ref, amount, startDate, endDate);
+		} catch (Exception e) {
+			System.out.println("Erreur à l'enregistrement");
+		}
+
+		if (achieve)
+			System.out.println("Emprunt enregistré");
+		else
+			System.out.println("Erreur à l'enregistrement");
+
 		displayMenu();
 	}
 
 	/**
-	 * Display stock.
-	 *
-	 * @param startDate the start date
-	 * @param endDate the end date
-	 * @throws ParseException the parse exception
+	 * Display stock between the two dates.
+	 * 
+	 * @param startDate
+	 *            the start date
+	 * @param endDate
+	 *            the end date
+	 * @throws ParseException
+	 *             the parse exception
 	 */
-	private void displayStock(String startDate, String endDate) throws ParseException {
+	private void displayStock(String startDate, String endDate)
+			throws ParseException {
 		Map<MaterialType, ArrayList<Material>> availableStock = controller
 				.getAvailableStock(startDate, endDate);
 		for (MaterialType materialType : availableStock.keySet()) {
@@ -301,7 +409,7 @@ public class ConsoleView {
 
 	/**
 	 * Adds the new user.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	private boolean addNewUser() {
@@ -350,7 +458,7 @@ public class ConsoleView {
 
 	/**
 	 * Delete user.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	private boolean deleteUser() {
@@ -375,7 +483,7 @@ public class ConsoleView {
 
 	/**
 	 * Connect.
-	 *
+	 * 
 	 * @return true, if successful
 	 */
 	public boolean connect() {
@@ -400,8 +508,9 @@ public class ConsoleView {
 
 	/**
 	 * Sign off.
-	 *
-	 * @throws Exception the exception
+	 * 
+	 * @throws Exception
+	 *             the exception
 	 */
 	private void signOff() throws Exception {
 		controller.signOff();

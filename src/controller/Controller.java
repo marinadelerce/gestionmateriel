@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+
 import model.loan.Loan;
+import model.loan.Loans;
 import model.manager.GeneralManager;
 import model.material.Material;
 import model.material.MaterialType;
@@ -35,7 +37,6 @@ public class Controller {
 	public Controller(){
 		model = new GeneralManager();
 		view = new ConsoleView(this);
-		model.load();
 	}
 	
 	/**
@@ -44,6 +45,8 @@ public class Controller {
 	 * @throws Exception the exception
 	 */
 	public void start() throws Exception{
+		//model.load();
+		model.populate();
 		view.displayStart();
 		view.begin();
 	}
@@ -188,6 +191,23 @@ public class Controller {
 	public Map<MaterialType, ArrayList<Material>> getAvailableStock(
 			String startDate, String endDate) throws ParseException {
 		return model.getAvailableStock(DateUtils.convertDate(startDate), DateUtils.convertDate(endDate));
+	}
+
+	/**
+	 * Gets the borrowed stock.
+	 *
+	 * @param startDate the start date
+	 * @param endDate the end date
+	 * @return the borrowed stock
+	 * @throws ParseException the parse exception
+	 */
+	public Map<MaterialType, ArrayList<Material>> getBorrowedStock(
+			String startDate, String endDate) {
+		return model.getBorrowedStock(startDate,endDate);
+	}
+
+	public Loans getLoans(User connectedUser) {
+		return model.getLoans(connectedUser);
 	}
 
 }

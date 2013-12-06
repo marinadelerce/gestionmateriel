@@ -1,13 +1,20 @@
 package model.manager;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import utils.DateUtils;
 import model.loan.Loan;
+import model.loan.Loans;
 import model.material.Material;
 import model.material.MaterialType;
+import model.material.OS;
+import model.material.SmartPhone;
+import model.user.Manager;
+import model.user.Student;
 import model.user.User;
 
 /**
@@ -33,6 +40,15 @@ public class GeneralManager {
 		materialManager = new MaterialManager();
 		userManager = new UserManager();
 		currentDate = new GregorianCalendar();
+	}
+	
+	public void populate() {
+		userManager.addNewUser("Manager","Delerce", "Marina", "muttiMan", "md");
+		userManager.addNewUser("Student","Delerce", "Marina", "mutti", "md");
+		
+		SmartPhone smartphone = new SmartPhone("Galaxy S3", "Samsung", "Super tel!", 72, OS.ANDROID, 7);
+		materialManager.addMaterial(new Material(smartphone, "gs31"));
+		materialManager.addMaterial(new Material(smartphone, "gs32"));
 	}
 	
 	/**
@@ -199,6 +215,20 @@ public class GeneralManager {
 	 */
 	public boolean addMaterial(Material material) {
 		return materialManager.addMaterial(material);
+	}
+
+	public Map<MaterialType, ArrayList<Material>> getBorrowedStock(
+			String startDate, String endDate) {
+		try {
+			return materialManager.getBorrowedMaterial(DateUtils.convertDate(startDate), DateUtils.convertDate(endDate));
+		} catch (ParseException e) {
+			System.out.println("Probleme de format de date (jj/mm/aaaa) !");
+		}
+		return null;
+	}
+
+	public Loans getLoans(User connectedUser) {
+		return materialManager.getLoans(connectedUser);
 	}
 
 	

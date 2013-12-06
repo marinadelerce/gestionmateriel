@@ -41,7 +41,7 @@ public class Loans {
 	 */
 	public void add(Loan loan){
 		
-		loan.setEffective(false);
+		//loan.setEffective(false);
 		loans.add(loan);
 	}
 	
@@ -60,7 +60,7 @@ public class Loans {
 	 * @param date the date
 	 * @return the active reservations
 	 */
-	public List<Loan> getActiveReservations(GregorianCalendar date){
+	/*public List<Loan> getActiveReservations(GregorianCalendar date){
 		
 		List<Loan> active_reservations = new LinkedList<Loan>();
 		
@@ -72,7 +72,7 @@ public class Loans {
 		
 		return active_reservations;
 		
-	}
+	}*/
 	
 	/**
 	 * Gets the finished loans.
@@ -80,7 +80,7 @@ public class Loans {
 	 * @param date the date
 	 * @return the finished loans
 	 */
-	public List<Loan> getFinishedLoans(GregorianCalendar date){
+	/*public List<Loan> getFinishedLoans(GregorianCalendar date){
 		
 		List<Loan> finished_loans = new LinkedList<Loan>();
 		
@@ -90,7 +90,7 @@ public class Loans {
 		}
 		
 		return finished_loans;
-	}
+	}*/
 	
 	/**
 	 * Save.

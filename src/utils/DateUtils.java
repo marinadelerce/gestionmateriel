@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,4 +23,12 @@ public class DateUtils {
 		
 		return newDate;
 	}
+	
+	public static String dateToString(GregorianCalendar date){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date dateDate = date.getTime();
+		 
+		return dateFormat.format(dateDate);
+	}
+	
 }

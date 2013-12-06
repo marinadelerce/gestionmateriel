@@ -37,7 +37,7 @@ public class MaterialManager {
 	private static int idLoan = 0;
 
 	/** The Constant conversion. */
-	private final static int conversion = 86400000;
+	private final static int conversion = 3600*24*1000;
 
 	/**
 	 * Instantiates a new material manager.
@@ -143,15 +143,16 @@ public class MaterialManager {
 	 *            the end date
 	 * @return the int
 	 */
-	private int calculateDifference(GregorianCalendar startDate,
+	private long calculateDifference(GregorianCalendar startDate,
 			GregorianCalendar endDate) {
-		int result = 0;
+		long result = 0;
 
 		if (startDate.after(endDate))
 			result = -1;
-		else
-			result = startDate.compareTo(endDate) / conversion;
-
+		else {
+			result = (endDate.getTimeInMillis()-startDate.getTimeInMillis()) / conversion;
+		}
+		
 		return result;
 	}
 
@@ -181,7 +182,7 @@ public class MaterialManager {
 	public List<Loan> getReservations() {
 		List<Loan> reservations = new ArrayList<Loan>();
 		for (Loan loan : loans.getLoans()) {
-			if (!loan.isValidate() || !loan.isEffective()) {
+			if (!loan.isValidate() /*|| !loan.isEffective()*/) {
 				reservations.add(loan);
 			}
 		}
@@ -243,8 +244,8 @@ public class MaterialManager {
 				if (!loansByMaterialType.containsKey(loan.getMaterials().get(0)
 						.getMaterialType())) {
 					loansByMaterialType.put(loan.getMaterials().get(0)
-							.getMaterialType(),
-							new ArrayList<Material>(loan.getMaterials()));
+							.getMaterialType(),new ArrayList<Material>(loan.getMaterials())
+							);
 				} else {
 					for (Material material : loan.getMaterials()) {
 						loansByMaterialType.get(
@@ -254,7 +255,7 @@ public class MaterialManager {
 				}
 			}
 		}
-
+		
 		return loansByMaterialType;
 	}
 
@@ -274,9 +275,9 @@ public class MaterialManager {
 
 		loansByMaterialType = getBorrowedMaterial(startDate, endDate);
 		Map<MaterialType, ArrayList<Material>> availableStock = new HashMap<MaterialType, ArrayList<Material>>();
-
+		
 		for (MaterialType materialType : stock.getStock().keySet()) {
-			if (loansByMaterialType.get(materialType) == null) {
+			if (!loansByMaterialType.containsKey(materialType)) {
 				ArrayList<Material> availableMaterials = stock
 						.getStock(materialType);
 				availableStock.put(materialType, availableMaterials);
@@ -296,6 +297,8 @@ public class MaterialManager {
 			}
 
 		}
+		
+		
 		return availableStock;
 	}
 
@@ -314,7 +317,8 @@ public class MaterialManager {
 			GregorianCalendar endDate) {
 		MaterialType materialType = stock.getMaterialType(ref);
 		if (materialType != null) {
-			if (calculateDifference(startDate, endDate) < materialType
+			long result = calculateDifference(startDate, endDate);
+			if (result < materialType
 					.getMaxTimeLoan()) {
 				return true;
 			}
@@ -369,6 +373,22 @@ public class MaterialManager {
 	 */
 	public boolean addMaterial(Material material) {
 		return stock.add(material);
+	}
+
+	/**
+	 * Fetch the user's loans
+	 * 
+	 * @param connectedUser
+	 *            the connected user
+	 * @return the user's loans
+	 */
+	public Loans getLoans(User connectedUser) {
+		Loans userloans = new Loans();
+		for(Loan loan: loans.getLoans()){
+			if(loan.getUser().equals(connectedUser))
+				userloans.add(loan);
+		}
+		return userloans;
 	}
 
 }

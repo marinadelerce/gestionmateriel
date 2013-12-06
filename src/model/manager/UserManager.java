@@ -28,7 +28,7 @@ public class UserManager {
 	private Manager manager;
 	
 	/** The Constant conversion. */
-	private final static int conversion = 86400000;
+	private final static int conversion = 3600*24*1000;
 
 	/**
 	 * Instantiates a new user manager.
@@ -154,15 +154,25 @@ public class UserManager {
 		if(connectedUser instanceof Borrower){
 			Borrower borrower = (Borrower) connectedUser;
 			boolean book = true;
-			int duration;
+			long duration;
 			// verifier les dates
-			if (startDate.after(endDate) || startDate.equals(endDate))
+			if (startDate.after(endDate))
 				book = false;
 			// verifier les durees
 			else {
-				duration = startDate.compareTo(endDate) / conversion;
+				duration = (endDate.getTimeInMillis() - startDate.getTimeInMillis()) / conversion;
 				if (duration > borrower.getLoanDuration())
 					book = false;
+			}
+			
+			if(book){
+				if(connectedUser instanceof Student){
+					GregorianCalendar today = new GregorianCalendar();
+					today.add(GregorianCalendar.DAY_OF_MONTH, 7);
+					if(startDate.after(today)) {
+						book = false;
+					}
+				}
 			}
 
 			return book;

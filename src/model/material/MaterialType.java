@@ -135,4 +135,5 @@ public class MaterialType{
 		if (name!=m.name || brand != m.brand || description != m.description || reference != m.reference || maxTimeLoan != m.maxTimeLoan) return false; 
 		return true;
 	}
+	
 }

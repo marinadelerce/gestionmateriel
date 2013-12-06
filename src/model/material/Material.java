@@ -103,4 +103,9 @@ public class Material {
 		if (!m.material_type.equals(material_type)) return false;
 		return true;
 	}
+	
+	@Override
+	public String toString(){
+		return this.getSerialNumber() + " ( " + this.getMaterialType().getName() + ") ";
+	}
 }
